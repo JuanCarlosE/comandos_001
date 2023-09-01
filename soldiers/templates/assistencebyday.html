@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistencias</title>
+</head>
+<body>
+<h1>Lista de asistencia</h1>
+    {% if listaAsistencia %}
+    <ul>
+    {% for item in listaAsistencia %}
+        <li>{{ item.soldier }}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>No hay registros disponibles.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,7 @@
+<title>Registro de asistencia</title>
+    <form action="/soldiers/save/" method="post">
+        {% csrf_token %}
+        <label for="Campo_Telefono">Ingresa tu numero de telefono:</label>
+        <input type="text" name="phone" id="Campo_Telefono" value="{{phone}}">
+        <input type="submit" value="Enviar">
+    </form>

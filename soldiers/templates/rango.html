@@ -1,0 +1,15 @@
+<title>Rango fechas</title>
+
+
+<h1>Asistencias del {{fecha1}} al {{fecha2}}</h1>
+
+{% if rangeList %}
+    <ul>
+    {% for item in rangeList %}
+        <li>{{item.soldier}}: {{item.registerDate}}</li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>No hay registros disponibles.</p>
+    {% endif %}
+

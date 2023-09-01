@@ -1,0 +1,23 @@
+<html>
+    <h1>Lista de morosos</h1>
+    {% if morososList %}
+<table>
+    <thead> 
+        <tr>
+            <th>Soldados</th>
+            <th>Días extra</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for moroso in morososList %}
+            <tr>
+                <td>{{moroso.nombre}}</td>
+                <td>{{moroso.diasextra}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No hay registros disponibles.</p>
+{% endif %}
+</html>
