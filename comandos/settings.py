@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'comandos.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
@@ -93,6 +93,7 @@ DATABASES = {
         'HOST': 'LAPTOP-JUAN',
     }
 }
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
