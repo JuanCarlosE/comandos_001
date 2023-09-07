@@ -265,6 +265,7 @@ pyrightconfig.json
 
 ### VisualStudioCode ###
 .vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -289,3 +290,8 @@ pyrightconfig.json
 
 #Database
 *.sqlite3
+db.sqlite3
+
+#Virtual enviroment folder and enviroment files
+/env
+*.env
