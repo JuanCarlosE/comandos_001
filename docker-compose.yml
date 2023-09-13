@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  comandos_web:
+    build: .
+    container_name: comandos_web
+    volumes:
+      - ./:/usr/src/app
+    ports: 
+      - 8000:8000
+    environment:
+      - POSTGRES_DB=comandos_db
+      - POSTGRES_USER=carlitos
+      - POSTGRES_PASSWORD=carlitos123
+    depends_on:
+      - comandos_db
+    restart: always
+
+  comandos_db:
+    image: postgres
+    container_name: comandos_db
+    hostname: postgres
+    environment:
+      - POSTGRES_DB=comandos_db
+      - POSTGRES_USER=carlitos
+      - POSTGRES_PASSWORD=carlitos123
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: always
