@@ -87,7 +87,7 @@ def viewMorosos(request):
         if paso3 > 12:
             dictmorosos = {"nombre": o.order.soldier.names, "diasextra":paso3-12}
             morosos.append(dictmorosos)
-            context = {
-                "morososList": morosos
-            }
+    context = {
+        "morososList": morosos
+    }
     return render (request,"morosos.html", context)
