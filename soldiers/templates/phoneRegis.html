@@ -1,3 +1,8 @@
+{% extends "base.html" %}
+{% load static%}
+{% block content %}
+
+<div>
 <title>Registro de asistencia</title>
     <form action="/soldiers/save/" method="post">
         {% csrf_token %}
@@ -5,3 +10,5 @@
         <input type="text" name="phone" id="Campo_Telefono" value="{{phone}}">
         <input type="submit" value="Enviar">
     </form>
+</div>
+{% endblock content %}

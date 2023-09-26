@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tramposos</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static%}
+{% block content %}
+<title>Tramposos</title>
+<div>
     <h1>Lista de personas que se colaron</h1>
     {% if trampososList %}
     <ul>
@@ -16,5 +13,5 @@
     {% else %}
     <p>No hay registros disponibles.</p>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock content %}
