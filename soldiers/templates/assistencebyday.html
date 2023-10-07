@@ -4,9 +4,9 @@
 <div>
     <h1>Lista de asistencia</h1>
         {% if listaAsistencia %}
-        <ul>
+        <ul class="list-group">
         {% for item in listaAsistencia %}
-            <li>{{ item.soldier }}</li>
+            <li class="list-group-item">{{ item.soldier }}</li>
         {% endfor %}
         </ul>
         {% else %}

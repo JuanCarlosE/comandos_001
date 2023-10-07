@@ -3,13 +3,15 @@
 {% block content %}
 <title>Morosos</title>
 <div>
-    <h1>Lista de morosos</h1>
+    <h3>Lista de morosos
+        <small class="text-body-secondary">Personas que asistierón mas días de los que tienen pagos</small>
+    </h3>
         {% if morososList %}
-    <table>
+    <table class="table">
         <thead> 
             <tr>
-                <th>Soldados</th>
-                <th>Días extra</th>
+                <th scope="col">Soldados</th>
+                <th scope="col">Días extra</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +24,7 @@
         </tbody>
     </table>
     {% else %}
-    <p>No hay registros disponibles.</p>
+    <p><small>No hay morosos que mostrar.</small></p>
     {% endif %}
 </div>
 {% endblock content %}
