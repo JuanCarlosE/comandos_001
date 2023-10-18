@@ -135,7 +135,7 @@
         let month = this.getAttribute('data-month');
         let day = this.getAttribute('data-day');
         
-        window.location.href = `/soldiers/assistence/${year}/${month}/${day}`
+        //window.location.href = `/soldiers/assistence/${year}/${month}/${day}`
         
         self.openDay(this);
       });
