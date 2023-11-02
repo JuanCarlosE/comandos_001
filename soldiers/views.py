@@ -3,14 +3,16 @@ from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Soldier,Assistence
+from django.http import JsonResponse
 from orders.models import Order,OrderDetail
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required,permission_required
 
 # Create your views here.
 #Lleva a index page.
-def  index(request):
+def index(request):
     return render (request, "index.html")
+
 #Lleva a la pagina que habilita el registro de usuarios a partir de su numero celular.
 def phoneRegister(request):
     return render (request, "phoneRegis.html")
@@ -25,7 +27,7 @@ def asisRegister(request):
     try:
         usr = Soldier.objects.get(phoneNumber=phone)
     except ObjectDoesNotExist:
-        return HttpResponse("El usuario aun no esta registrado.")
+        return render(request, 'hola.html', {"message":"El usuario aun no esta registrado."})
 
     ordenSuscri = Order.objects.filter(soldier = usr.getId())
 
@@ -57,10 +59,24 @@ def viewCalendar(request):
 
 def viewAsistenciabyDay(request, year, month, day):
     asistenciByDay = Assistence.objects.filter(registerDate__year=year, registerDate__month=month,registerDate__day=day)
+    countByDay = asistenciByDay.count()
+    assis2 = Assistence.objects.all()
     context = {
-        "listaAsistencia": asistenciByDay
+        "listaAsistencia": asistenciByDay,
     }
-    return render (request, "assistencebyday.html", context)
+    return render (request, 'assistencebyday.html' ,context)
+
+def countCalendar(request, year, month, day):
+
+    #Asistencia general
+    asistenciByDay = Assistence.objects.filter(registerDate__year=year, registerDate__month=month,registerDate__day=day)
+    countByDay = asistenciByDay.count()
+
+    #Asistencia tramposos
+    tramp = Assistence.objects.filter(registerDate__year=year,registerDate__month=month,registerDate__day=day,status=False)
+    countTramp = tramp.count()
+
+    return JsonResponse ({"totalAsistencia": countByDay, "totalTramposos": countTramp}, safe=False)
 
 def viewTramposos(request, year, month, day):
     tramp = Assistence.objects.filter(registerDate__year=year,registerDate__month=month,registerDate__day=day,status=False)
@@ -93,3 +109,4 @@ def viewMorosos(request):
         "morososList": morosos
     }
     return render (request,"morosos.html", context)
+
