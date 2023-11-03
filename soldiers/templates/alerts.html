@@ -16,8 +16,14 @@
 
 <body>
     <div id="mensaje">
-        {% if message %}
-            <p class="text-start">{{ message }}</p>
+        {% if message == 1 %}
+            <p class="text-start">El usuario aun no esta registrado.</p>
+        {% elif message == 2 %}
+            <p class="text-start">Registro satisfactorio.</p>
+        {% elif message == 3 %}
+            <p class="text-start">El usuario ya asistió el dia de hoy.</p>
+        {% elif message == 4 %}
+            <p class="text-start">El usuario no tiene ninguna orden de suscripcion registrada.</p>
         {% else %}
             <p>Error :c</p>
         {% endif %}

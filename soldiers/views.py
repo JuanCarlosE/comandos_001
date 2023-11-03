@@ -27,7 +27,7 @@ def asisRegister(request):
     try:
         usr = Soldier.objects.get(phoneNumber=phone)
     except ObjectDoesNotExist:
-        return render(request, 'hola.html', {"message":"El usuario aun no esta registrado."})
+        return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
 
     ordenSuscri = Order.objects.filter(soldier = usr.getId())
 
@@ -46,13 +46,13 @@ def asisRegister(request):
             else:
                 asistencia = Assistence(soldier=usr, status=True, orderId=suscriActivas)
             asistencia.save()
-            return HttpResponse ("Registro satisfactorio.")
+            return render (request, 'alerts.html', {"message":2})#"Registro satisfactorio."
         else:
-            return HttpResponse ("El usuario ya asistió el dia de hoy.")
+            return render (request, 'alerts.html', {"message":3} )#"El usuario ya asistió el dia de hoy."
     else: 
         asistencia = Assistence(soldier=usr,status=False)
         asistencia.save()
-        return HttpResponse ("El usuario no tiene ninguna orden de suscripcion registrada.")
+        return render (request, 'alerts.html', {"message":4})#"El usuario no tiene ninguna orden de suscripcion registrada."
 
 def viewCalendar(request):
     return render(request, "reports.html")
