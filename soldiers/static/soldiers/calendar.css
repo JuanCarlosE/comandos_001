@@ -39,11 +39,11 @@ z-index: 1000;
 }
 
 #fa-1 {
-left: calc(50% - 40px);
+left: calc(45% - 40px);
 }
 
 #fa-2 {
-left: calc(100% - 40px);
+left: calc(90% - 40px);
 }
 
 .form-control-placeholder {
@@ -194,4 +194,7 @@ opacity: 1;
 .datepicker-dropdown.datepicker-orient-right:after {
   right: calc(50% - 5px);
 }
+}
+#showDataButton{
+  border-radius: 0% 18% 18% 0%;
 }
