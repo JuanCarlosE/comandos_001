@@ -6,34 +6,54 @@
     <link rel="stylesheet" href="{% static 'soldiers/calendar.css' %}" >
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
 
 </head>
 <body>
-    <div id="calendar" >
+    <div class="container-sm" id="calendar" >
         <script src="{% static 'soldiers/calendar.js' %}/"></script>
-        <form autocomplete="off">
+        <div class="formDay">
             <div class="flex-row d-flex justify-left">
                 <div class="col-lg-6 col-11 px-1">
-                    <div class="input-group input-daterange">
-                        <input type="text" id="start" class="form-control text-left mr-2">
+                    <div class="input-group mb-3 input-daterange">
+                        <input type="text" id="start" class="form-control">
                         <label class="ml-3 form-control-placeholder" id="start-p" for="start">Start Date</label>
                         <span class="fa fa-calendar" id="fa-1"></span>
                         <input type="text" id="end" class="form-control text-left ml-2">
                         <label class="ml-3 form-control-placeholder" id="end-p" for="end">End Date</label>
                         <span class="fa fa-calendar" id="fa-2"></span>
-                        <button id="showDataButton">Mostrar Datos</button>
-                        <div id="dataContainer" style="display: none;">
-                            <!-- Contenido -->
-                        </div>
-                        
+                        <button class="btn btn-outline-secondary" type="button" id="showDataButton">Enviar</button>
+                        <script>
+                            document.getElementById('showDataButton').addEventListener('click', function(){
+                                var date1 = document.getElementById('start').value;
+                                var date2 = document.getElementById('end').value;
+                                var dt1 = date1.split('-');
+                                var dt2 = date2.split('-');
+                                fetch(`/soldiers/api/calendar/${dt1[2]}/${dt1[1]}/${dt1[0]}/to/${dt2[2]}/${dt2[1]}/${dt2[0]}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    const dataAsis = document.getElementById('dataAsis');
+                                    const dataTramp = document.getElementById('dataTramp');
+                                    dataAsis.innerHTML = `Total de asistencias: ${data.totalAsistencia}`;
+                                    dataTramp.innerHTML =`Total de tramposos: ${data.totalTramposos}`;
+                                    dataAsis.style.display = 'block';
+                                    dataTramp.style.display = 'block';
+                                })
+                                .catch(error => {
+                                    console.error('Error al obtener datos: ', error)
+                                });
+                            })
+                        </script>
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+    <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action list-group-item-light" id="dataAsis" style="display: none;"></a>
+            <a href="#" class="list-group-item list-group-item-action list-group-item-light" id="dataTramp" style="display: none;"></a>
+   </div>
 </body>
 {% endblock content %}
 
