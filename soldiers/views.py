@@ -66,7 +66,7 @@ def viewAsistenciabyDay(request, year, month, day):
     }
     return render (request, 'assistencebyday.html' ,context)
 
-def countCalendar(request,year,month,day,year2,month2,day2):
+def countCalendar(request, year,month,day,year2,month2,day2):
     #Dias
     fecha1 = datetime.date(year,month,day)
     fecha2 = datetime.date(year2,month2,day2)
@@ -79,17 +79,21 @@ def countCalendar(request,year,month,day,year2,month2,day2):
 
     return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
 
-def viewTramposos(request, year, month, day):
-    tramp = Assistence.objects.filter(registerDate__year=year,registerDate__month=month,registerDate__day=day,status=False)
+def viewTramposos(request, year,month,day,year2,month2,day2):
+    date1 = datetime.date(year,month,day)
+    date2 = datetime.date(year2,month2,day2)
+    tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False)
     context = {
-        "trampososList": tramp,
+        "fecha1": date1,
+        "fecha2": date2,
+        "trampososList": tramp
     }
     return render(request, 'tramposos.html',context)
 
 def viewRange(request,year,month,day,year2,month2,day2):
     date1 = datetime.date(year,month,day)
     date2 = datetime.date(year2,month2,day2)
-    range = Assistence.objects.filter(registerDate__range=(date1, date2))
+    range = Assistence.objects.filter(registerDate__range=(date1,date2))
     context = {
         "fecha1": date1,
         "fecha2": date2,

@@ -2,18 +2,18 @@
 {% load static%}
 {% block content %}
 <title>Tramposos</title>
-<div>
     <h3>Colados
-        <small class="text-body-secondary">Personas que asistierón sin tener una suscripción activa</small>
+        <small class="text-body-secondary">Personas que asistierón del {{fecha1}} al {{fecha2}} sin tener una suscripción activa</small>
     </h3>
+<div>
     {% if trampososList %}
     <ul class="list-group">
     {% for item in trampososList %}
-        <li class="list-group-item">{{ item.soldier }}</li>
+        <li class="list-group-item">{{ item.soldier }}: {{item.registerDate}}</li>
     {% endfor %}
     </ul>
     {% else %}
-    <p><small>No hay tramposos que mostrar.</small></p>
+    <p><small>No hay tramposos por mostrar.</small></p>
     {% endif %}
 </div>
 {% endblock content %}

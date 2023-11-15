@@ -43,6 +43,12 @@
                                 .catch(error => {
                                     console.error('Error al obtener datos: ', error)
                                 });
+                                document.getElementById('dataAsis').addEventListener('click', function(){
+                                    window.location.href=`/soldiers/range/${dt1[2]}/${dt1[1]}/${dt1[0]}/to/${dt2[2]}/${dt2[1]}/${dt2[0]}`
+                                });
+                                document.getElementById('dataTramp').addEventListener('click', function(){
+                                    window.location.href=`/soldiers/cheaters/${dt1[2]}/${dt1[1]}/${dt1[0]}/to/${dt2[2]}/${dt2[1]}/${dt2[0]}`
+                                });
                             })
                         </script>
                     </div>
@@ -51,8 +57,10 @@
         </div>
     </div>
     <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action list-group-item-light" id="dataAsis" style="display: none;"></a>
-            <a href="#" class="list-group-item list-group-item-action list-group-item-light" id="dataTramp" style="display: none;"></a>
+            <a href="#"
+                class="list-group-item list-group-item-action list-group-item-light" id="dataAsis" style="display: none;"></a>
+            <a href="#" 
+                class="list-group-item list-group-item-action list-group-item-light" id="dataTramp" style="display: none;"></a>
    </div>
 </body>
 {% endblock content %}
