@@ -19,7 +19,7 @@ def phoneRegister(request):
 
 def asisRegister(request):
     usr = ''
-    now = timezone.now()
+    now = timezone.localtime(timezone.now())
     phone = request.POST.get("phone")
     suscriActivas = "null"
     asistencia = "null"
@@ -57,6 +57,7 @@ def asisRegister(request):
 def viewCalendar(request):
     return render(request, "reports.html")
 
+'''
 def viewAsistenciabyDay(request, year, month, day):
     asistenciByDay = Assistence.objects.filter(registerDate__year=year, registerDate__month=month,registerDate__day=day)
     countByDay = asistenciByDay.count()
@@ -65,7 +66,7 @@ def viewAsistenciabyDay(request, year, month, day):
         "listaAsistencia": asistenciByDay,
     }
     return render (request, 'assistencebyday.html' ,context)
-
+'''
 def countCalendar(request, year,month,day,year2,month2,day2):
     #Dias
     fecha1 = datetime.date(year,month,day)

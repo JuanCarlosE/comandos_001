@@ -198,3 +198,6 @@ opacity: 1;
 #showDataButton{
   border-radius: 0% 18% 18% 0%;
 }
+#end{
+  margin-left: 10px;
+}
