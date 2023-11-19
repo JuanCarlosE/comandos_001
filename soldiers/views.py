@@ -72,35 +72,72 @@ def countCalendar(request, year,month,day,year2,month2,day2):
     fecha1 = datetime.date(year,month,day)
     fecha2 = datetime.date(year2,month2,day2)
 
-    #Asistencia general
-    rangeGeneral = Assistence.objects.filter(registerDate__range=(fecha1, fecha2)).count()
+    if fecha2 != fecha1:
+        #Asistencia general
+        rangeGeneral = Assistence.objects.filter(registerDate__range=(fecha1, fecha2)).count()
+        #Asistencia tramposos
+        rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
+        return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
+    else:
+        #Dia 2 agregandole un dia extra.
+        fecha2 = datetime.date(year2, month2, day2) + datetime.timedelta(days=1)
 
-    #Asistencia tramposos
-    rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
+        #Asistencia general
+        rangeGeneral = Assistence.objects.filter(registerDate__range=(fecha1, fecha2)).count()
+        #Asistencia tramposos
+        rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
+        return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
 
-    return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
 
 def viewTramposos(request, year,month,day,year2,month2,day2):
+    #Dias
     date1 = datetime.date(year,month,day)
     date2 = datetime.date(year2,month2,day2)
-    tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False)
-    context = {
-        "fecha1": date1,
-        "fecha2": date2,
-        "trampososList": tramp
-    }
-    return render(request, 'tramposos.html',context)
+
+    if date2 != date1:
+        tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False)
+        context = {
+            "fecha1": date1,
+            "fecha2": date2,
+            "trampososList": tramp
+        }
+        return render(request, 'tramposos.html',context)
+    else:
+        #Dia 2 agregandole un dia extra.
+        date2 = datetime.date(year2, month2, day2) + datetime.timedelta(days=1)
+
+        tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False)
+        context = {
+            "fecha1": date1,
+            "fecha2": date2,
+            "trampososList": tramp
+        }
+        return render(request, 'tramposos.html',context)
+
 
 def viewRange(request,year,month,day,year2,month2,day2):
+    #Dias
     date1 = datetime.date(year,month,day)
     date2 = datetime.date(year2,month2,day2)
-    range = Assistence.objects.filter(registerDate__range=(date1,date2))
-    context = {
-        "fecha1": date1,
-        "fecha2": date2,
-        "rangeList": range
-    }
-    return render(request, 'rango.html',context)
+
+    if date2 != date1:
+        range = Assistence.objects.filter(registerDate__range=(date1,date2))
+        context = {
+            "fecha1": date1,
+            "fecha2": date2,
+            "rangeList": range
+        }
+        return render(request, 'rango.html',context)
+    else:
+        #Dia 2 agregandole un dia extra.
+        date2 = datetime.date(year2, month2, day2) + datetime.timedelta(days=1) 
+        range = Assistence.objects.filter(registerDate__range=(date1,date2))
+        context = {
+            "fecha1": date1,
+            "fecha2": date2,
+            "rangeList": range
+        }
+        return render(request, 'rango.html',context)
 
 def viewMorosos(request):
     morosos = []
