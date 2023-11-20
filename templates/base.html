@@ -19,22 +19,22 @@
         <div id="Nav">
           <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-              <a class="navbar-brand" href="{% url 'soldiers:index' %}"><i class="fa-solid fa-landmark"></i> Home</a>
+              <a class="navbar-brand" href="{% url 'soldiers:home' %}"><i class="fa-solid fa-landmark"></i> Home</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'soldiers:check' %}"><i class="fa-regular fa-pen-to-square"></i>Registro Asistencia</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'soldiers:check' %}"><i class="fa-regular fa-pen-to-square"></i> Registro Asistencia</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="fa-solid fa-bullhorn"></i> Reportes</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="{% url 'soldiers:morosos' %}"><i class="fa-solid fa-bugs"></i>Morosos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'soldiers:morosos' %}"><i class="fa-solid fa-bugs"></i> Morosos</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{% url 'soldiers:calendar' %}"><i class="fa-solid fa-calendar-days"></i>Calendario</a></li>
+                      <li><a class="dropdown-item" href="{% url 'soldiers:calendar' %}"><i class="fa-solid fa-calendar-days"></i> Calendario</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -60,7 +60,7 @@
               </a>
           
               <ul class="nav col-md-4 justify-content-end">
-                <li class="nav-item"><a href="{% url 'soldiers:index' %}" class="nav-link px-2 text-body-secondary"><i class="fa-solid fa-landmark fa-xl"></i></a></li>
+                <li class="nav-item"><a href="{% url 'soldiers:home' %}" class="nav-link px-2 text-body-secondary"><i class="fa-solid fa-landmark fa-xl"></i></a></li>
                 <li class="nav-item"><a href="https://www.instagram.com/comandos_gym/?utm_source=ig_web_button_share_sheet&igshid=OGQ5ZDc2ODk2ZA==" class="nav-link px-2 text-body-secondary"><i class="fa-brands fa-instagram fa-xl"></i></a></li>
                 <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">¿?</a></li>
                 <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">¿?</a></li>

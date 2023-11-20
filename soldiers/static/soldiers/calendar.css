@@ -35,7 +35,7 @@ position: absolute;
 top: 13px;
 font-size: 20px;
 color: #1976D2;
-z-index: 1000;
+z-index: 1;
 }
 
 #fa-1 {
@@ -54,7 +54,7 @@ left: calc(90% - 40px);
 }
 
 #end-p {
-left: calc(50% + 4px);
+left: 45%;
 }
 
 .form-control:focus + .form-control-placeholder,

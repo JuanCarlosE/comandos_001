@@ -10,8 +10,8 @@ from django.contrib.auth.decorators import login_required,permission_required
 
 # Create your views here.
 #Lleva a index page.
-def index(request):
-    return render (request, "index.html")
+def home(request):
+    return render (request, "home.html")
 
 #Lleva a la pagina que habilita el registro de usuarios a partir de su numero celular.
 def phoneRegister(request):
