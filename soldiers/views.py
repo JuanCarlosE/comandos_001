@@ -91,53 +91,34 @@ def countCalendar(request, year,month,day,year2,month2,day2):
 
 def viewTramposos(request, year,month,day,year2,month2,day2):
     #Dias
-    date1 = datetime.date(year,month,day)
-    date2 = datetime.date(year2,month2,day2)
+    date1 = str(year)+'-'+str(month)+'-'+str(day)+' 00:00:00'
+    date2 = str(year2)+'-'+str(month2)+'-'+str(day2)+' 23:59:59'
+    fecha1 = datetime.date(year,month,day)
+    fecha2 = datetime.date(year2,month2,day2)
 
-    if date2 != date1:
-        tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False)
-        context = {
-            "fecha1": date1,
-            "fecha2": date2,
-            "trampososList": tramp
-        }
-        return render(request, 'tramposos.html',context)
-    else:
-        #Dia 2 agregandole un dia extra.
-        date2 = datetime.date(year2, month2, day2) + datetime.timedelta(days=1)
-
-        tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False)
-        context = {
-            "fecha1": date1,
-            "fecha2": date2,
-            "trampososList": tramp
-        }
-        return render(request, 'tramposos.html',context)
-
+    tramp = Assistence.objects.filter(registerDate__range=(date1,date2),status=False).order_by('registerDate')
+    context = {
+        "fecha1": fecha1,
+        "fecha2": fecha2,
+        "trampososList": tramp
+    }
+    return render(request, 'tramposos.html',context)
 
 def viewRange(request,year,month,day,year2,month2,day2):
     #Dias
-    date1 = datetime.date(year,month,day)
-    date2 = datetime.date(year2,month2,day2)
+    fecha1 = datetime.date(year,month,day)
+    fecha2 = datetime.date(year2,month2,day2)
+    date1 = str(year)+'-'+str(month)+'-'+str(day)+' 00:00:00'
+    date2 = str(year2)+'-'+str(month2)+'-'+str(day2)+' 23:59:59'
 
-    if date2 != date1:
-        range = Assistence.objects.filter(registerDate__range=(date1,date2))
-        context = {
-            "fecha1": date1,
-            "fecha2": date2,
-            "rangeList": range
-        }
-        return render(request, 'rango.html',context)
-    else:
-        #Dia 2 agregandole un dia extra.
-        date2 = datetime.date(year2, month2, day2) + datetime.timedelta(days=1) 
-        range = Assistence.objects.filter(registerDate__range=(date1,date2))
-        context = {
-            "fecha1": date1,
-            "fecha2": date2,
-            "rangeList": range
-        }
-        return render(request, 'rango.html',context)
+    #if date2 != date1:
+    range = Assistence.objects.filter(registerDate__range=(date1,date2)).order_by('registerDate')
+    context = {
+        "fecha1": fecha1,
+        "fecha2": fecha2,
+        "rangeList": range
+    }
+    return render(request, 'rango.html',context)
 
 def viewMorosos(request):
     morosos = []
@@ -146,7 +127,7 @@ def viewMorosos(request):
         paso2 = (o.order.id)
         paso3 = Assistence.objects.filter(order=paso2).count()
         if paso3 > 12:
-            dictmorosos = {"nombre": o.order.soldier.names, "diasextra":paso3-12}
+            dictmorosos = {"nombre": o.order.soldier.names, 'factura': o.order.id, 'fechaVencimiento': o.endSuscription,  "diasextra":paso3-12}
             morosos.append(dictmorosos)
     context = {
         "morososList": morosos

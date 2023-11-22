@@ -11,6 +11,8 @@
         <thead> 
             <tr>
                 <th scope="col">Soldados</th>
+                <th scope="col">Factura No.</th>
+                <th scope="col">Fecha Vencimiento</th>
                 <th scope="col">Días extra</th>
             </tr>
         </thead>
@@ -18,6 +20,8 @@
             {% for moroso in morososList %}
                 <tr>
                     <td>{{moroso.nombre}}</td>
+                    <td>{{moroso.factura}}</td>
+                    <td>{{moroso.fechaVencimiento}}</td>
                     <td>{{moroso.diasextra}}</td>
                 </tr>
             {% endfor %}
