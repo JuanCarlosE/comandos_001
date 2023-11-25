@@ -42,10 +42,11 @@ def asisRegister(request):
         asisExist = Assistence.objects.filter(registerDate__year=now.year, registerDate__month=now.month,registerDate__day=now.day,soldier_id=usr)
         if asisExist.count() == 0:
             if suscriActivas == "null":
-                asistencia = Assistence(soldier=usr,status=False)
+                asistencia = Assistence(soldier=usr,status=False)#Tengo que revisar esto.
+                #asistencia.save()
             else:
                 asistencia = Assistence(soldier=usr, status=True, orderId=suscriActivas)
-            asistencia.save()
+                asistencia.save()
             return render (request, 'alerts.html', {"message":2})#"Registro satisfactorio."
         else:
             return render (request, 'alerts.html', {"message":3} )#"El usuario ya asistió el dia de hoy."
