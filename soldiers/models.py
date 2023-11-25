@@ -37,3 +37,6 @@ class Assistence(models.Model):
     registerDate = models.DateTimeField(auto_now_add=True)
     status = models.BooleanField(verbose_name = "Activo:")
     order = models.ForeignKey(Order,on_delete=models.CASCADE,null=True,blank=True)
+    def __str__(self):
+        return "Asistencia No: " + str(self.id) + " || " + self.soldier.names
+

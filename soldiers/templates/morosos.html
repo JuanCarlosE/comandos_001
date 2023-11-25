@@ -3,15 +3,17 @@
 {% block content %}
 <title>Morosos</title>
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="{% static 'soldiers/dataTable.min.css' %}">
+<script src="{% static 'soldiers/dataTable.min.js' %}"></script>
 
-<div>
+<div id="Labels">
     <h3>Lista de morosos
         <small class="text-body-secondary">Personas que asistierón más días de los que tienen pagos</small>
     </h3>
+</div>
+<div id="tableMorosos" class="table container">
         {% if morososList %}
-    <table id="table" class="table">
+    <table id="Table" class="table">
         <thead> 
             <tr>
                 <th scope="col">Soldados</th>
