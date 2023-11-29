@@ -12,6 +12,10 @@ class Order(models.Model):
     orderProducts = models.ManyToManyField(ProductServ,through="OrderDetail")
     def __str__(self):
         return "Orden No: " + str(self.id) + " Usuario: " + self.soldier.names
+    
+    class Meta:
+        verbose_name = "Factura"
+        verbose_name_plural = "Facturas"
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
@@ -29,3 +33,8 @@ class OrderDetail(models.Model):
 
     def getEndSuscription (self):
         return self.endSuscription
+    
+    class Meta:
+        verbose_name = "Detalles de la Factura"
+        verbose_name_plural = "Detalles de las Facturas"
+

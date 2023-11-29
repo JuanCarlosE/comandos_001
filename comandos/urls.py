@@ -18,6 +18,10 @@ from django.contrib import admin
 from django.urls import path , include
 from soldiers import views
 
+#Front config
+admin.site.site_title = "Comandos Administrador"
+admin.site.site_header = "Administración Comandos"
+
 urlpatterns = [
     #Django Jet admin
     path('jet/', include('jet.urls', 'jet')),
@@ -28,5 +32,4 @@ urlpatterns = [
     path("soldiers/", include("soldiers.urls")),
     #Home
     path('', views.home, name='home'),
-    
 ]

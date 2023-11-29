@@ -11,9 +11,12 @@ class Soldier(models.Model):
     notes = models.TextField(blank=True)
     def __str__(self):
         return self.names + " " + self.lastNames
-    
+
     def getId (self): 
         return self.id
+    class Meta:
+        verbose_name = "Soldado"
+        verbose_name_plural  =  "Soldados"
 
 class Measures(models.Model):
     soldier = models.ForeignKey(Soldier,on_delete=models.CASCADE)
@@ -31,6 +34,10 @@ class Measures(models.Model):
     neck = models.FloatField(null=True,blank=True)
     ass = models.FloatField(null=True,blank=True)
 
+    class Meta:
+        verbose_name = "Medida"
+        verbose_name_plural  =  "Medidas"
+
 from orders.models import Order
 class Assistence(models.Model):
     soldier = models.ForeignKey(Soldier,on_delete=models.CASCADE)
@@ -39,4 +46,8 @@ class Assistence(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return "Asistencia No: " + str(self.id) + " || " + self.soldier.names
+
+    class Meta:
+        verbose_name = "Asistencia"
+        verbose_name_plural  =  "Asistencias"
 
