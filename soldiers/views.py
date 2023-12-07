@@ -1,10 +1,12 @@
 import datetime
 from django.utils import timezone
+from products.models import ProductServ
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Soldier,Assistence
 from django.http import JsonResponse
 from orders.models import Order,OrderDetail
+from templates.factura.invoice import makePdf
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required,permission_required
 
@@ -135,3 +137,19 @@ def viewMorosos(request):
     }
     return render (request,"morosos.html", context)
 
+def viewInvoice(request,id):
+    data = Order.objects.filter(id=id).get()
+    nameItem = OrderDetail.objects.filter(order=id).get()
+    valueItem = ProductServ.objects.filter(name=nameItem.product).get()
+    items = [
+        {
+            'producto':nameItem.product,
+            'cantidad':nameItem.quantity,
+            'valorProd':valueItem.price,
+            
+        }
+    ]
+    total = sum([i['valorProd'] for i in items])
+    info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
+            "pagoMeto":data.methodPayment, "items":items,"final":nameItem.endSuscription.date,"totalFactu":total}
+    return render (request, "invTemplate.html",info)

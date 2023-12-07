@@ -11,7 +11,7 @@ class Order(models.Model):
     methodPayment = models.CharField(max_length=50)
     orderProducts = models.ManyToManyField(ProductServ,through="OrderDetail")
     def __str__(self):
-        return "Orden No: " + str(self.id) + " Usuario: " + self.soldier.names
+        return "Factura No. " + str(self.id) + " Usuario: " + self.soldier.names
     
     class Meta:
         verbose_name = "Factura"

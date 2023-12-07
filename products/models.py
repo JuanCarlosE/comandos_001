@@ -11,7 +11,7 @@ class ProductServ(models.Model):
     categoryChoices=[
         (PRODUCT, "Producto"),
         (SERVICE, "Servicio"),
-        (SUBSCRIPTION, "Suscripcion ")
+        (SUBSCRIPTION, "Suscripción ")
     ]
 
     name = models.CharField(max_length=150)

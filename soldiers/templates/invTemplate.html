@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Factura Comandos</title>
+    <link rel="stylesheet" href="{% static 'css/invoice.css' %}">
+</head>
+<body>
+	<div class="invoice-box">
+		<table cellpadding="0" cellspacing="0">
+			<tr class="top">
+				<td colspan="2">
+					<table>
+						<tr>
+							<td class="title">
+								<img
+									src="{% static 'images/logo.png' %}"
+									style="width: 100%; max-width: 300px"
+								/>
+							</td>
+
+							<td>
+								Factura No. {{numFactura}} <br>
+								Creado el {{fechaCreacion}} <br>
+								<!-- Renovar February 1, 2023 Check this-->
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+
+			<tr class="information">
+				<td colspan="2">
+					<table>
+						<tr>
+							<td>
+								<strong>Comandos Gym</strong><br>
+								DG. 7 #1-74 <br>
+								Cel. 321 430 6274 <br>
+								<strong>abccomandos@gmail.com</strong>
+							</td>
+
+							<td>
+								<strong>{{client}}<br/></strong>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<th>Método de pago</th>
+				<td>{{pagoMeto}}</td>
+			</tr>
+		</table>
+		<table class="table">
+			<tr class="heading">
+				<td>Producto</td>
+				<td>Cantidad</td>
+				<td class="derecha">Precio ($)</td>
+			</tr>
+			{% for item in items %}
+			<tr class="item">
+				<td>{{item.producto}}</td>
+				<td>{{item.cantidad}}</td>
+				<td class="derecha">{{item.valorProd}}</td>
+			</tr>
+			{% endfor %}
+			<tr class="total">
+				<td colspan="2">Fecha de corte: {{final}}</td>
+				<td>Total: ${{totalFactu}}</td>
+			</tr>
+		</table>
+		<p>	
+			Este es un documento que respalda el compromiso adquirido con el gimnasio, 
+			en el tiempo determinado que se especifica en esta factura. 
+			No se hacen reembolsos de dinero. Recuerde que usted está adquiriendo la prestación 
+			de un servicio, consciente de su tiempo y disponibilidad para asistir.
+		</p>
+	</div>
+</body>
+</html>
