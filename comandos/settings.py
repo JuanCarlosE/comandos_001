@@ -46,7 +46,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = ['djmoney',]
 
 LOCAL_APPS = [
     'soldiers.apps.SoldiersConfig',

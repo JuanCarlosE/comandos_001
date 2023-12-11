@@ -3,12 +3,13 @@ from django.db import models
 # Create your models here.
 
 class Soldier(models.Model):
-    names = models.CharField(max_length=100)
-    lastNames = models.CharField(max_length=100)
-    rh = models.CharField(max_length=3, blank=True)
-    age = models.SmallIntegerField()
-    phoneNumber = models.CharField(max_length=20,unique=True)
-    notes = models.TextField(blank=True)
+    names = models.CharField(max_length=100,verbose_name= "Nombres:")
+    lastNames = models.CharField(max_length=100,verbose_name= "Apellidos:")
+    rh = models.CharField(max_length=3, blank=True,verbose_name= "RH:")
+    age = models.SmallIntegerField(verbose_name= "Edad:")
+    phoneNumber = models.CharField(max_length=20,unique=True,verbose_name= "No. celular:")
+    userPhoto = models.ImageField(upload_to ='uploads/',max_length=100,verbose_name= "Foto:", blank=True)
+    notes = models.TextField(blank=True,verbose_name= "Observaciones:")
     def __str__(self):
         return self.names + " " + self.lastNames
 
@@ -20,19 +21,19 @@ class Soldier(models.Model):
 
 class Measures(models.Model):
     soldier = models.ForeignKey(Soldier,on_delete=models.CASCADE)
-    weight = models.FloatField(null=True,blank=True)
-    height = models.FloatField(null=True,blank=True)
-    shoulders = models.FloatField(null=True,blank=True)
-    abds = models.FloatField(null=True,blank=True)
-    pectoral = models.FloatField(null=True,blank=True)
-    leftBicep = models.FloatField(null=True,blank=True)
-    rightBicep = models.FloatField(null=True,blank=True)
-    leftForearm = models.FloatField(null=True,blank=True)
-    rightForearm = models.FloatField(null=True,blank=True)
-    leftLeg = models.FloatField(null=True,blank=True)
-    RightLeg = models.FloatField(null=True,blank=True)
-    neck = models.FloatField(null=True,blank=True)
-    ass = models.FloatField(null=True,blank=True)
+    weight = models.FloatField(null=True,blank=True,verbose_name= "Peso:")
+    height = models.FloatField(null=True,blank=True,verbose_name= "Altura:")
+    shoulders = models.FloatField(null=True,blank=True,verbose_name= "Hombros:")
+    abds = models.FloatField(null=True,blank=True,verbose_name= "Abdomen:")
+    pectoral = models.FloatField(null=True,blank=True,verbose_name= "Pectorales:")
+    leftBicep = models.FloatField(null=True,blank=True,verbose_name= "Bicep izquierdo:")
+    rightBicep = models.FloatField(null=True,blank=True,verbose_name= "Bicep derecho:")
+    leftForearm = models.FloatField(null=True,blank=True,verbose_name= "Antebrazo izquierdo:")
+    rightForearm = models.FloatField(null=True,blank=True,verbose_name= "Antebrazo derecho:")
+    leftLeg = models.FloatField(null=True,blank=True,verbose_name= "Pierna izquierda:")
+    RightLeg = models.FloatField(null=True,blank=True,verbose_name= "Pierna derecha:")
+    neck = models.FloatField(null=True,blank=True,verbose_name= "Cuello:")
+    ass = models.FloatField(null=True,blank=True,verbose_name= "Gluteo:")
 
     class Meta:
         verbose_name = "Medida"
@@ -40,10 +41,10 @@ class Measures(models.Model):
 
 from orders.models import Order
 class Assistence(models.Model):
-    soldier = models.ForeignKey(Soldier,on_delete=models.CASCADE)
+    soldier = models.ForeignKey(Soldier,on_delete=models.CASCADE,verbose_name= "Soldado:")
     registerDate = models.DateTimeField(auto_now_add=True)
-    status = models.BooleanField(verbose_name = "Activo:")
-    order = models.ForeignKey(Order,on_delete=models.CASCADE,null=True,blank=True)
+    status = models.BooleanField(verbose_name = "Estado")
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,null=True,blank=True,verbose_name= "Factura:")
     def __str__(self):
         return "Asistencia No: " + str(self.id) + " || " + self.soldier.names
 

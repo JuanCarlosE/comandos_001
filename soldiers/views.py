@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from .models import Soldier,Assistence
 from django.http import JsonResponse
 from orders.models import Order,OrderDetail
-from templates.factura.invoice import makePdf
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required,permission_required
 
