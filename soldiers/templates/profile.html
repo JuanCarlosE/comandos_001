@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<head>
+  <title>Perfil {{nombreSold}}</title>
+</head>
+<section>
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img src="{{ photo_url }}" class="img-thumbnail img-fluid" style="width: 150px;">
+              <p class="h1">{{nombreSold}} {{apellidoSold}} </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Fecha corte:</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{dateEnd}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">RH:</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{rh}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">No. Celular:</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{phone}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Edad:</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{age}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Observaciones:</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{notes}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock content %}

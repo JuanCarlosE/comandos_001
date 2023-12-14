@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 from soldiers import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 #Front config
 admin.site.site_title = "Comandos Administrador"
@@ -32,4 +34,4 @@ urlpatterns = [
     path("soldiers/", include("soldiers.urls")),
     #Home
     path('', views.home, name='home'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

@@ -12,5 +12,6 @@ urlpatterns = [
     path("cheaters/<int:year>/<int:month>/<int:day>/to/<int:year2>/<int:month2>/<int:day2>", views.viewTramposos), #Envia una lista con los usuarios "tramposos" por el rango de fecha puesto (que asisten luego de que su mensualidad haya vencido.)
     path("range/<int:year>/<int:month>/<int:day>/to/<int:year2>/<int:month2>/<int:day2>", views.viewRange), #Envia una lista con los registros hechos dentro de un periodo de tiempo.
     path("morosos/", views.viewMorosos, name='morosos'), #Envia una lista con los usuarios "morosos" (que van mas de los 15 dias pagos.)
-    path("factura/<str:id>", views.viewInvoice)
+    path("factura/<str:id>", views.viewInvoice), #Envia al template para visualizar la factura del usuario seleccionado.
+    path("perfil/<str:id>", views.viewProfile),
 ]

@@ -8,7 +8,7 @@ class Soldier(models.Model):
     rh = models.CharField(max_length=3, blank=True,verbose_name= "RH:")
     age = models.SmallIntegerField(verbose_name= "Edad:")
     phoneNumber = models.CharField(max_length=20,unique=True,verbose_name= "No. celular:")
-    userPhoto = models.ImageField(upload_to ='uploads/',max_length=100,verbose_name= "Foto:", blank=True)
+    userPhoto = models.ImageField(upload_to ='photos/',max_length=100,verbose_name= "Foto:", blank=True)
     notes = models.TextField(blank=True,verbose_name= "Observaciones:")
     def __str__(self):
         return self.names + " " + self.lastNames

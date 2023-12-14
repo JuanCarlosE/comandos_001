@@ -2,6 +2,12 @@
 {% load static %}
 {% block content %}
 
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
+
 <title>Rango fecha</title>
 <h1>Asistencias 
     <small class=" text-body-secondary">del {{fecha1}} al {{fecha2}}</small>
@@ -10,7 +16,7 @@
 {% if rangeList %}
     <ul class="list-group">
     {% for item in rangeList %}
-        <li class="list-group-item">{{item.soldier}}: {{item.registerDate}}</li>
+        <a href="/soldiers/perfil/{{item.soldier.id}}"><li class="list-group-item">{{item.soldier}}: {{item.registerDate}}</li></a>
     {% endfor %}
     </ul>
     {% else %}

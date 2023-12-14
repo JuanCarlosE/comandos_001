@@ -71,24 +71,12 @@ def viewAsistenciabyDay(request, year, month, day):
 '''
 def countCalendar(request, year,month,day,year2,month2,day2):
     #Dias
-    fecha1 = datetime.date(year,month,day)
-    fecha2 = datetime.date(year2,month2,day2)
+    fecha1 = str(year)+'-'+str(month)+'-'+str(day)+' 00:00:00'
+    fecha2 = str(year2)+'-'+str(month2)+'-'+str(day2)+' 23:59:59'
 
-    if fecha2 != fecha1:
-        #Asistencia general
-        rangeGeneral = Assistence.objects.filter(registerDate__range=(fecha1, fecha2)).count()
-        #Asistencia tramposos
-        rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
-        return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
-    else:
-        #Dia 2 agregandole un dia extra.
-        fecha2 = datetime.date(year2, month2, day2) + datetime.timedelta(days=1)
-
-        #Asistencia general
-        rangeGeneral = Assistence.objects.filter(registerDate__range=(fecha1, fecha2)).count()
-        #Asistencia tramposos
-        rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
-        return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
+    rangeGeneral = Assistence.objects.filter(registerDate__range=(fecha1, fecha2)).count()
+    rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
+    return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
 
 
 def viewTramposos(request, year,month,day,year2,month2,day2):
@@ -138,7 +126,7 @@ def viewMorosos(request):
 
 def viewInvoice(request,id):
     data = Order.objects.filter(id=id).get()
-    nameItem = OrderDetail.objects.filter(order=id).get()
+    nameItem = OrderDetail.objects.filter(order=id).get()#Pregunta si aca siempre buscaria la orden actual en la que esta.
     valueItem = ProductServ.objects.filter(name=nameItem.product).get()
     items = [
         {
@@ -152,3 +140,12 @@ def viewInvoice(request,id):
     info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
             "pagoMeto":data.methodPayment, "items":items,"final":nameItem.endSuscription.date,"totalFactu":total}
     return render (request, "invTemplate.html",info)
+
+def viewProfile(request,id):
+    data = Soldier.objects.filter(id=id).get()
+    ord = Order.objects.filter(soldier_id=id).get()
+    invoice = OrderDetail.objects.filter(order_id=ord.id).get()
+
+    info = {"photo_url":data.userPhoto.url,"nombreSold":data.names,"apellidoSold":data.lastNames,"dateEnd":invoice.endSuscription.date,
+            "rh":data.rh,"phone":data.phoneNumber,"age":data.age,"notes":data.notes}
+    return render (request, "profile.html",info)

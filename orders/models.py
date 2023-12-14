@@ -21,8 +21,8 @@ class OrderDetail(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
     product = models.ForeignKey(ProductServ,on_delete=models.CASCADE,verbose_name= "Producto:")
     quantity = models.IntegerField(default=1,verbose_name= "Cantidad:")
-    startSuscription = models.DateField(blank=True,null=True,verbose_name= "Inicio de suscripción:")
-    endSuscription= models.DateField(blank=True,null=True,verbose_name= "Fin de suscripción:")
+    startSuscription = models.DateTimeField(blank=True,null=True,verbose_name= "Inicio de suscripción:")
+    endSuscription= models.DateTimeField(blank=True,null=True,verbose_name= "Fin de suscripción:")
     def __str__(self):
         return "orderDetailId: "+ str(self.id)
     def getId(self):
