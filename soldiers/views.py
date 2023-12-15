@@ -30,31 +30,40 @@ def asisRegister(request):
     except ObjectDoesNotExist:
         return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
 
-    ordenSuscri = Order.objects.filter(soldier = usr.getId())
+    ordenSuscri = Order.objects.filter(soldier=usr.getId())
 
-    if (ordenSuscri.count() > 0 ):
+    if ordenSuscri.count() > 0:
         for pedido in ordenSuscri:
-            ordenEnProduct = OrderDetail.objects.filter(order = pedido)
+            ordenEnProduct = OrderDetail.objects.filter(order=pedido)
 
             for itemOrder in ordenEnProduct:
-                if(itemOrder.product.category == "suscripcion" and itemOrder.endSuscription >= now):
+                if (
+                    itemOrder.product.category == "suscripcion"
+                    and itemOrder.endSuscription >= now
+                ):
                     suscriActivas = pedido
 
-        asisExist = Assistence.objects.filter(registerDate__year=now.year, registerDate__month=now.month,registerDate__day=now.day,soldier_id=usr)
+        asisExist = Assistence.objects.filter(
+            registerDate__year=now.year,
+            registerDate__month=now.month,
+            registerDate__day=now.day,
+            soldier=usr,
+        )
         if asisExist.count() == 0:
             if suscriActivas == "null":
-                asistencia = Assistence(soldier=usr,status=False)#Tengo que revisar esto.
-                #asistencia.save()
+                asistencia = Assistence(soldier=usr, status=False)
             else:
-                asistencia = Assistence(soldier=usr, status=True, orderId=suscriActivas)
-                asistencia.save()
-            return render (request, 'alerts.html', {"message":2})#"Registro satisfactorio."
+                asistencia = Assistence(
+                    soldier=usr, status=True, orderId=suscriActivas, registerDate=now
+                )
+            asistencia.save()
+            return render(request, 'alerts.html', {"message":2})#"Registro satisfactorio."
         else:
-            return render (request, 'alerts.html', {"message":3} )#"El usuario ya asistió el dia de hoy."
-    else: 
-        asistencia = Assistence(soldier=usr,status=False)
+            return render(request, 'alerts.html', {"message":3})#"El usuario ya asistió el dia de hoy."
+    else:
+        asistencia = Assistence(soldier=usr, status=False)
         asistencia.save()
-        return render (request, 'alerts.html', {"message":4})#"El usuario no tiene ninguna orden de suscripcion registrada."
+        return render(request, 'alerts.html', {"message":4})#"El usuario no tiene ninguna orden de suscripcion registrada."
 
 def viewCalendar(request):
     return render(request, "reports.html")
