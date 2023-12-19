@@ -2,8 +2,8 @@ import datetime
 from django.utils import timezone
 from products.models import ProductServ
 from django.shortcuts import render
-from django.http import HttpResponse
 from .models import Soldier,Assistence
+from django.db.models import Q
 from django.http import JsonResponse
 from orders.models import Order,OrderDetail
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,17 +19,38 @@ def phoneRegister(request):
     return render (request, "phoneRegis.html")
 
 def asisRegister(request):
-    usr = ''
     now = timezone.localtime(timezone.now())
     phone = request.POST.get("phone")
-    suscriActivas = "null"
-    asistencia = "null"
 
     try:
-        usr = Soldier.objects.get(phoneNumber=phone)
+        usr = Soldier.objects.filter(phoneNumber=phone).get()#Obtiene el usuario al que le pertenece el No celular.
     except ObjectDoesNotExist:
         return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
 
+    userInFactura = Order.objects.filter(soldier=usr.id)#Obtiene las ordenes que tiene el usuario vinculadas.
+    if userInFactura.exists():
+        suscriActivas = OrderDetail.objects.filter(Q(order__in=userInFactura)|
+                                                Q(endSuscription__gte=now)|
+                                                Q(product__category="Suscripción")).first() #Obtiene el id de la factura vinculado a los detalles de la factura
+    else:
+        suscriActivas = None
+
+    asisExist = Assistence.objects.filter(
+        registerDate__year=now.year,
+        registerDate__month=now.month,
+        registerDate__day=now.day,
+        soldier=usr
+    )
+    if asisExist.exists():
+        return render(request, 'alerts.html', {"message":3})#El usuario ya asistió el dia de hoy.
+    elif suscriActivas:
+        Assistence.objects.create(soldier=usr, status=True, order=suscriActivas.order, registerDate=now)
+        return render(request, 'alerts.html', {"message":2})#Registro satisfactorio.
+    else: 
+        Assistence.objects.create(soldier=usr, status=False, order=None, registerDate=now)
+        return render(request, 'alerts.html', {"message":4})#El usuario no tiene ninguna orden de suscripcion registrada.
+
+'''
     ordenSuscri = Order.objects.filter(soldier=usr.getId())
 
     if ordenSuscri.count() > 0:
@@ -51,20 +72,20 @@ def asisRegister(request):
         )
         if asisExist.count() == 0:
             if suscriActivas == "null":
-                asistencia = Assistence(soldier=usr, status=False)
+                asistencia = Assistence(soldier=usr, status=False, order_id=suscriActivas)
             else:
                 asistencia = Assistence(
-                    soldier=usr, status=True, orderId=suscriActivas, registerDate=now
+                    soldier=usr, status=True, order_id=suscriActivas, registerDate=now
                 )
             asistencia.save()
             return render(request, 'alerts.html', {"message":2})#"Registro satisfactorio."
         else:
             return render(request, 'alerts.html', {"message":3})#"El usuario ya asistió el dia de hoy."
     else:
-        asistencia = Assistence(soldier=usr, status=False)
+        asistencia = Assistence(soldier=usr, status=False, order_id=suscriActivas)
         asistencia.save()
         return render(request, 'alerts.html', {"message":4})#"El usuario no tiene ninguna orden de suscripcion registrada."
-
+'''
 def viewCalendar(request):
     return render(request, "reports.html")
 
@@ -134,7 +155,7 @@ def viewMorosos(request):
     return render (request,"morosos.html", context)
 
 def viewInvoice(request,id):
-    data = Order.objects.filter(id=id).get()
+    data = Order.objects.filter(id=id).latest('id')
     nameItem = OrderDetail.objects.filter(order=id).get()#Pregunta si aca siempre buscaria la orden actual en la que esta.
     valueItem = ProductServ.objects.filter(name=nameItem.product).get()
     items = [
@@ -152,9 +173,15 @@ def viewInvoice(request,id):
 
 def viewProfile(request,id):
     data = Soldier.objects.filter(id=id).get()
-    ord = Order.objects.filter(soldier_id=id).get()
-    invoice = OrderDetail.objects.filter(order_id=ord.id).get()
-
-    info = {"photo_url":data.userPhoto.url,"nombreSold":data.names,"apellidoSold":data.lastNames,"dateEnd":invoice.endSuscription.date,
+    try:
+        ord = Order.objects.filter(soldier_id=id).latest('id')
+        invoice = OrderDetail.objects.filter(order_id=ord.id).get()
+        info = {"photo_url":data.userPhoto.url,"nombreSold":data.names,"apellidoSold":data.lastNames,"dateEnd":invoice.endSuscription.date,
             "rh":data.rh,"phone":data.phoneNumber,"age":data.age,"notes":data.notes}
-    return render (request, "profile.html",info)
+        return render (request, "profile.html",info)
+    except ObjectDoesNotExist:
+        info = {"photo_url":data.userPhoto.url,"nombreSold":data.names,"apellidoSold":data.lastNames,"dateEnd":"No tiene una suscripción activa",
+            "rh":data.rh,"phone":data.phoneNumber,"age":data.age,"notes":data.notes}
+        return render (request, "profile.html",info)     
+
+

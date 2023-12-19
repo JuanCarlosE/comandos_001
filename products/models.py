@@ -12,7 +12,7 @@ class ProductServ(models.Model):
     categoryChoices=[
         (PRODUCT, "Producto"),
         (SERVICE, "Servicio"),
-        (SUBSCRIPTION, "Suscripción ")
+        (SUBSCRIPTION, "Suscripción")
     ]
 
     name = models.CharField(max_length=150,verbose_name= "Nombre:")
