@@ -28,8 +28,8 @@ def asisRegister(request):
         return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
 
     try:
-        userInFactura = Order.objects.filter(soldier=usr).get() #Obtiene las ordenes que tiene el usuario vinculadas.
-        suscriActivas = OrderDetail.objects.filter(order=userInFactura,endSuscription__gte=now).get()
+        userInFactura = Order.objects.filter(soldier=usr).all() #Obtiene las ordenes que tiene el usuario vinculadas.
+        suscriActivas = OrderDetail.objects.filter(order__in=userInFactura,endSuscription__gte=now).get()
     except ObjectDoesNotExist:
         suscriActivas = None
 
