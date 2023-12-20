@@ -27,12 +27,10 @@ def asisRegister(request):
     except ObjectDoesNotExist:
         return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
 
-    userInFactura = Order.objects.filter(soldier=usr.id)#Obtiene las ordenes que tiene el usuario vinculadas.
-    if userInFactura.exists():
-        suscriActivas = OrderDetail.objects.filter(Q(order__in=userInFactura)|
-                                                Q(endSuscription__gte=now)|
-                                                Q(product__category="Suscripción")).first() #Obtiene el id de la factura vinculado a los detalles de la factura
-    else:
+    try:
+        userInFactura = Order.objects.filter(soldier=usr).get() #Obtiene las ordenes que tiene el usuario vinculadas.
+        suscriActivas = OrderDetail.objects.filter(order=userInFactura,endSuscription__gte=now).get()
+    except ObjectDoesNotExist:
         suscriActivas = None
 
     asisExist = Assistence.objects.filter(
