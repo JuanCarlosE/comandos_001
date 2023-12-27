@@ -1,0 +1,26 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrahead %}
+    {{ block.super }}
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                    var select = document.getElementById('id_orderdetail_set-0-product');
+                    var fechas = document.getElementById('id_orderdetail_set-0-startSuscription_0');
+
+                    function bloqInput(){
+                        var opcion = select.options[select.selectedIndex].text.toLowerCase();
+
+                        if (opcion.includes('suscripción')){
+                            fechas.disabled = false;
+                            console.log("Hello");
+                        }
+                        else{
+                            fechas.disabled = true;
+                            console.log("NotHello");
+                        }
+                    }
+                    select.addEventListener('change',bloqInput);
+                    bloqInput();
+                });
+        </script>
+{% endblock %}

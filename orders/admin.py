@@ -10,11 +10,12 @@ class InlineOrderDetail(admin.TabularInline):
 
 class OrderAdmin(admin.ModelAdmin):
     inlines = [InlineOrderDetail]
-    list_display =["id","soldier","mi_boton_personalizado"]
+    list_display = ["id","soldier","facturarBtn"]
+    change_form_template = 'admin/order_detail.html'
 
-    def mi_boton_personalizado(self, obj):
+    def facturarBtn(self, obj):
         return format_html('<a class="btn", href="/soldiers/factura/'+str(obj.id)+'">Facturar</a>',obj.id)
-    mi_boton_personalizado.short_description = 'Acción'
+    facturarBtn.short_description = 'Acción'
 
 # Register your models here.
 admin.site.register(Order,OrderAdmin)

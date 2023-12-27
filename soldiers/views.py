@@ -13,11 +13,12 @@ from django.contrib.auth.decorators import login_required,permission_required
 #Lleva a index page.
 def home(request):
     return render (request, "home.html")
-
+@login_required
 #Lleva a la pagina que habilita el registro de usuarios a partir de su numero celular.
 def phoneRegister(request):
     return render (request, "phoneRegis.html")
 
+@login_required
 def asisRegister(request):
     now = timezone.localtime(timezone.now())
     phone = request.POST.get("phone")
@@ -47,43 +48,8 @@ def asisRegister(request):
     else: 
         Assistence.objects.create(soldier=usr, status=False, order=None, registerDate=now)
         return render(request, 'alerts.html', {"message":4})#El usuario no tiene ninguna orden de suscripcion registrada.
-
-'''
-    ordenSuscri = Order.objects.filter(soldier=usr.getId())
-
-    if ordenSuscri.count() > 0:
-        for pedido in ordenSuscri:
-            ordenEnProduct = OrderDetail.objects.filter(order=pedido)
-
-            for itemOrder in ordenEnProduct:
-                if (
-                    itemOrder.product.category == "suscripcion"
-                    and itemOrder.endSuscription >= now
-                ):
-                    suscriActivas = pedido
-
-        asisExist = Assistence.objects.filter(
-            registerDate__year=now.year,
-            registerDate__month=now.month,
-            registerDate__day=now.day,
-            soldier=usr,
-        )
-        if asisExist.count() == 0:
-            if suscriActivas == "null":
-                asistencia = Assistence(soldier=usr, status=False, order_id=suscriActivas)
-            else:
-                asistencia = Assistence(
-                    soldier=usr, status=True, order_id=suscriActivas, registerDate=now
-                )
-            asistencia.save()
-            return render(request, 'alerts.html', {"message":2})#"Registro satisfactorio."
-        else:
-            return render(request, 'alerts.html', {"message":3})#"El usuario ya asistió el dia de hoy."
-    else:
-        asistencia = Assistence(soldier=usr, status=False, order_id=suscriActivas)
-        asistencia.save()
-        return render(request, 'alerts.html', {"message":4})#"El usuario no tiene ninguna orden de suscripcion registrada."
-'''
+    
+@login_required
 def viewCalendar(request):
     return render(request, "reports.html")
 
@@ -97,6 +63,8 @@ def viewAsistenciabyDay(request, year, month, day):
     }
     return render (request, 'assistencebyday.html' ,context)
 '''
+
+@login_required
 def countCalendar(request, year,month,day,year2,month2,day2):
     #Dias
     fecha1 = str(year)+'-'+str(month)+'-'+str(day)+' 00:00:00'
@@ -106,7 +74,7 @@ def countCalendar(request, year,month,day,year2,month2,day2):
     rangeTramposos = Assistence.objects.filter(registerDate__range=(fecha1, fecha2),status=False).count()
     return JsonResponse ({"totalAsistencia": rangeGeneral, "totalTramposos": rangeTramposos}, safe=False)
 
-
+@login_required
 def viewTramposos(request, year,month,day,year2,month2,day2):
     #Dias
     date1 = str(year)+'-'+str(month)+'-'+str(day)+' 00:00:00'
@@ -122,6 +90,7 @@ def viewTramposos(request, year,month,day,year2,month2,day2):
     }
     return render(request, 'tramposos.html',context)
 
+@login_required
 def viewRange(request,year,month,day,year2,month2,day2):
     #Dias
     fecha1 = datetime.date(year,month,day)
@@ -138,6 +107,7 @@ def viewRange(request,year,month,day,year2,month2,day2):
     }
     return render(request, 'rango.html',context)
 
+@login_required
 def viewMorosos(request):
     morosos = []
     paso1 = OrderDetail.objects.filter(product=2)
@@ -145,13 +115,14 @@ def viewMorosos(request):
         paso2 = (o.order.id)
         paso3 = Assistence.objects.filter(order=paso2).count()
         if paso3 > 12:
-            dictmorosos = {"nombre": o.order.soldier.names, 'factura': o.order.id, 'fechaVencimiento': o.endSuscription,  "diasextra":paso3-12}
+            dictmorosos = {"nombre": o.order.soldier.names, 'factura': o.order.id, 'fechaVencimiento': o.endSuscription,  "diasextra":paso3-12,"perfil":o.order.soldier.id}
             morosos.append(dictmorosos)
     context = {
         "morososList": morosos
     }
     return render (request,"morosos.html", context)
 
+@login_required
 def viewInvoice(request,id):
     data = Order.objects.filter(id=id).latest('id')
     nameItem = OrderDetail.objects.filter(order=id).get()#Pregunta si aca siempre buscaria la orden actual en la que esta.
@@ -169,6 +140,7 @@ def viewInvoice(request,id):
             "pagoMeto":data.methodPayment, "items":items,"final":nameItem.endSuscription.date,"totalFactu":total}
     return render (request, "invTemplate.html",info)
 
+@login_required
 def viewProfile(request,id):
     data = Soldier.objects.filter(id=id).get()
     try:
