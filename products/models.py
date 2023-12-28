@@ -20,7 +20,6 @@ class ProductServ(models.Model):
     category = models.CharField(max_length=4, choices=categoryChoices,default=SUBSCRIPTION,verbose_name= "Categoría:")
     creationDate = models.DateTimeField(auto_now_add=True)
     modificationDate= models.DateTimeField(auto_now=True)
-    status = models.BooleanField(verbose_name = "Estado") 
     price = MoneyField(max_digits=8,default_currency='COP',verbose_name= "Precio:")
     def __str__(self):
         return self.name

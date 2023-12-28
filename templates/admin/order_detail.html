@@ -5,22 +5,30 @@
         <script>
             document.addEventListener('DOMContentLoaded', function(){
                     var select = document.getElementById('id_orderdetail_set-0-product');
-                    var fechas = document.getElementById('id_orderdetail_set-0-startSuscription_0');
+                    var title1 = document.querySelector('.column-startSuscription');
+                    var title2 = document.querySelector('.column-endSuscription');
+                    var endDate = document.querySelector('.field-endSuscription');
+                    var startDate = document.querySelector('.field-startSuscription');
+                    var opcion = select.options[select.selectedIndex].value;
 
-                    function bloqInput(){
-                        var opcion = select.options[select.selectedIndex].text.toLowerCase();
-
-                        if (opcion.includes('suscripción')){
-                            fechas.disabled = false;
-                            console.log("Hello");
-                        }
-                        else{
-                            fechas.disabled = true;
-                            console.log("NotHello");
-                        }
+                    select.onchange = function (ev) {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        
+                        console.log(this.value)
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        if(select.value <= 5)
+                            title1.style.display = 'run-in',
+                            title2.style.display = 'run-in',
+                            startDate.style.display = 'run-in',
+                            endDate.style.display = 'run-in';
+                        else
+                            title1.style.display = 'none',
+                            title2.style.display = 'none',
+                            startDate.style.display = 'none',
+                            endDate.style.display = 'none';
                     }
-                    select.addEventListener('change',bloqInput);
-                    bloqInput();
                 });
         </script>
 {% endblock %}
