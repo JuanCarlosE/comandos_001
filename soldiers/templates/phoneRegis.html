@@ -9,8 +9,13 @@
     <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="inputGroup-sizing-sm">Ingresa tu número de teléfono</span>
             <input type="text" name="phone" id="Campo_Telefono" value="{{phone}}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            <input type="submit" value="Enviar" class="btn btn-outline-secondary">
+            <input type="submit" value="Enviar" id="sendBtn" class="btn btn-outline-secondary">
         </form>
     </div>
 </div>
+<!-- <script>
+    document.getElementById('sendBtn').addEventListener('click', function(){
+        fetch(`/soldiers/alerts/`)
+    });
+</script> -->
 {% endblock content %}

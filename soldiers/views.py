@@ -13,6 +13,7 @@ from django.contrib.auth.decorators import login_required,permission_required
 #Lleva a index page.
 def home(request):
     return render (request, "home.html")
+
 @login_required
 #Lleva a la pagina que habilita el registro de usuarios a partir de su numero celular.
 def phoneRegister(request):
@@ -27,7 +28,7 @@ def asisRegister(request):
         usr = Soldier.objects.filter(phoneNumber=phone).get()#Obtiene el usuario al que le pertenece el No celular.
     except ObjectDoesNotExist:
         return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
-
+        #return JsonResponse ({"message": 1}, safe=False)
     try:
         userInFactura = Order.objects.filter(soldier=usr).all() #Obtiene las ordenes que tiene el usuario vinculadas.
         suscriActivas = OrderDetail.objects.filter(order__in=userInFactura,endSuscription__gte=now).get()
@@ -131,14 +132,18 @@ def viewInvoice(request,id):
         {
             'producto':nameItem.product,
             'cantidad':nameItem.quantity,
-            'valorProd':valueItem.price,
-            
+            'valorProd':valueItem.price,   
         }
     ]
     total = sum([i['valorProd'] for i in items])
-    info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
-            "pagoMeto":data.methodPayment, "items":items,"final":nameItem.endSuscription.date,"totalFactu":total}
-    return render (request, "invTemplate.html",info)
+    try:
+        info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
+                "pagoMeto":data.methodPayment, "items":items,"final":nameItem.endSuscription.date,"totalFactu":total}
+        return render (request, "invTemplate.html",info)
+    except:
+        info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
+                "pagoMeto":data.methodPayment, "items":items,"final":"No aplica","totalFactu":total}
+        return render (request, "invTemplate.html",info)
 
 @login_required
 def viewProfile(request,id):
