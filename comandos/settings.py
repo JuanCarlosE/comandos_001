@@ -163,7 +163,12 @@ JET_THEMES = [
     {
         'theme': 'green',
         'color': '#44b78b',
-        'title': 'Green'
+        'title': 'Black'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
     },
     {
         'theme': 'light-green',
@@ -171,19 +176,8 @@ JET_THEMES = [
         'title': 'Light Green'
     },
     {
-        'theme': 'light-violet',
-        'color': '#a464c4',
-        'title': 'Light Violet'
-    },
-    {
-        'theme': 'light-blue',
-        'color': '#5EADDE',
-        'title': 'Light Blue'
-    },
-    {
-        'theme': 'light-gray',
-        'color': '#222',
-        'title': 'Light Gray'
+        'theme': 'ownTheme',
+        'color': '#FFFFFF',
+        'title': 'Black'
     }
 ]
-

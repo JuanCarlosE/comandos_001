@@ -27,8 +27,7 @@ def asisRegister(request):
     try:
         usr = Soldier.objects.filter(phoneNumber=phone).get()#Obtiene el usuario al que le pertenece el No celular.
     except ObjectDoesNotExist:
-        return render(request, 'alerts.html', {"message":1})#"El usuario aun no esta registrado."
-        #return JsonResponse ({"message": 1}, safe=False)
+        return JsonResponse ({"message": 1}, safe=False)#"El usuario aun no esta registrado."
     try:
         userInFactura = Order.objects.filter(soldier=usr).all() #Obtiene las ordenes que tiene el usuario vinculadas.
         suscriActivas = OrderDetail.objects.filter(order__in=userInFactura,endSuscription__gte=now).get()
@@ -42,13 +41,13 @@ def asisRegister(request):
         soldier=usr
     )
     if asisExist.exists():
-        return render(request, 'alerts.html', {"message":3})#El usuario ya asistió el dia de hoy.
+        return JsonResponse ({"message": 3}, safe=False)#El usuario ya asistió el dia de hoy.
     elif suscriActivas:
         Assistence.objects.create(soldier=usr, status=True, order=suscriActivas.order, registerDate=now)
-        return render(request, 'alerts.html', {"message":2})#Registro satisfactorio.
+        return JsonResponse ({"message": 2}, safe=False)#Registro satisfactorio.
     else: 
         Assistence.objects.create(soldier=usr, status=False, order=None, registerDate=now)
-        return render(request, 'alerts.html', {"message":4})#El usuario no tiene ninguna orden de suscripcion registrada.
+        return JsonResponse ({"message": 4}, safe=False)#El usuario no tiene ninguna orden de suscripcion registrada.
     
 @login_required
 def viewCalendar(request):

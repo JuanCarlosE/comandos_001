@@ -4,7 +4,7 @@
 
 <div>
 <title>Registro de asistencia</title>
-        <form action="/soldiers/save/" method="post">
+        <form method="post">
             {% csrf_token %}
     <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="inputGroup-sizing-sm">Ingresa tu número de teléfono</span>
@@ -13,9 +13,22 @@
         </form>
     </div>
 </div>
-<!-- <script>
+<script>
     document.getElementById('sendBtn').addEventListener('click', function(){
-        fetch(`/soldiers/alerts/`)
+        fetch(`/soldiers/api/alerts/`)
+        .then(response => response.json())
+        .then(data =>{
+            const alerts = document.getElementById('alerta');
+            alerts.innerHTML = `Anuncio: ${data.message}`;
+            alerts.style.display = 'block';
+            console.log("hola")
+        })
+        .catch (error => {
+            console.error('Error al obtener los datos: ', error)
+        })
     });
-</script> -->
+</script> 
+<div>
+    <p id="alerta" style="display: none;"></p>
+</div>
 {% endblock content %}
