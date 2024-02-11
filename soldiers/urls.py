@@ -3,7 +3,10 @@ from . import views
 
 app_name= "soldiers"
 urlpatterns = [
-    path('', views.home, name='home'),
+    path("home/", views.home, name='home'), #Visualiza la página principal que visualizaran los clientes.
+    path("services/", views.services, name='services'), #Visualiza la página principal que visualizaran los clientes.
+    path("plants/", views.plants, name='plants'), #Visualiza la página principal que visualizaran los clientes.
+
     path("check/", views.phoneRegister, name='check'), #Obtiene y envia el numero de celular para filtrar a partir de el.
     path("api/alerts/", views.asisRegister), #Guarda el intento de asistencia del usuario con o sin orden activa. 
     path("calendar/", views.viewCalendar, name='calendar'), #Envia un calendario apartir del cual se podra observar los registros por dia.

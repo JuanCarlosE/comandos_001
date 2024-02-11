@@ -10,9 +10,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required,permission_required
 
 # Create your views here.
-#Lleva a index page.
+#Lleva a las paginas que los clientes visualizarán.
 def home(request):
-    return render (request, "home.html")
+    return render (request, "clientsPages/home.html")
+def services(request):
+    return render (request, "clientsPages/services.html")
+def plants(request):
+    return render (request, "clientsPages/plants.html")
 
 @login_required
 #Lleva a la pagina que habilita el registro de usuarios a partir de su numero celular.
@@ -23,11 +27,13 @@ def phoneRegister(request):
 def asisRegister(request):
     now = timezone.localtime(timezone.now())
     phone = request.POST.get("phone")
-
+    
+    
     try:
-        usr = Soldier.objects.filter(phoneNumber=phone).get()#Obtiene el usuario al que le pertenece el No celular.
-    except ObjectDoesNotExist:
-        return JsonResponse ({"message": 1}, safe=False)#"El usuario aun no esta registrado."
+        usr = Soldier.objects.get(phoneNumber=phone)#Obtiene el usuario al que le pertenece el No celular.
+    except Soldier.DoesNotExist:
+        return JsonResponse ({"message": 1, "info":None}, safe=False)#"El usuario aun no esta registrado."
+    
     try:
         userInFactura = Order.objects.filter(soldier=usr).all() #Obtiene las ordenes que tiene el usuario vinculadas.
         suscriActivas = OrderDetail.objects.filter(order__in=userInFactura,endSuscription__gte=now).get()
@@ -40,15 +46,22 @@ def asisRegister(request):
         registerDate__day=now.day,
         soldier=usr
     )
+    try:
+        dataUsr={"photo_url":usr.userPhoto.url,"nombreSold":usr.names,"apellidoSold":usr.lastNames,
+             "dateEnd":suscriActivas.endSuscription}
+    except:
+        dataUsr={"photo_url":usr.userPhoto.url,"nombreSold":usr.names,"apellidoSold":usr.lastNames,
+             "dateEnd":"No tiene una suscripción activa"}
+
     if asisExist.exists():
-        return JsonResponse ({"message": 3}, safe=False)#El usuario ya asistió el dia de hoy.
+        return JsonResponse ({"message": 3, "info":dataUsr}, safe=False)#El usuario ya asistió el dia de hoy.
     elif suscriActivas:
         Assistence.objects.create(soldier=usr, status=True, order=suscriActivas.order, registerDate=now)
-        return JsonResponse ({"message": 2}, safe=False)#Registro satisfactorio.
+        return JsonResponse ({"message": 2, "info":dataUsr}, safe=False)#Registro satisfactorio.
     else: 
         Assistence.objects.create(soldier=usr, status=False, order=None, registerDate=now)
-        return JsonResponse ({"message": 4}, safe=False)#El usuario no tiene ninguna orden de suscripcion registrada.
-    
+        return JsonResponse ({"message": 4, "info": dataUsr}, safe=False)#El usuario no tiene ninguna orden de suscripcion registrada.
+
 @login_required
 def viewCalendar(request):
     return render(request, "reports.html")

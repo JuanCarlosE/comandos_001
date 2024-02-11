@@ -1,34 +1,164 @@
 {% extends "base.html" %}
 {% load static%}
 {% block content %}
-
+    <link rel="stylesheet" href="{% static 'css/regist.css' %}" >
 <div>
 <title>Registro de asistencia</title>
-        <form method="post">
+        <div id="register" method="post">
             {% csrf_token %}
     <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="inputGroup-sizing-sm">Ingresa tu número de teléfono</span>
             <input type="text" name="phone" id="Campo_Telefono" value="{{phone}}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
             <input type="submit" value="Enviar" id="sendBtn" class="btn btn-outline-secondary">
-        </form>
+        </div>
     </div>
 </div>
 <script>
     document.getElementById('sendBtn').addEventListener('click', function(){
-        fetch(`/soldiers/api/alerts/`)
+        let phoneVal = document.querySelector('#Campo_Telefono').value;
+        let tokenValue = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        let body = new FormData();
+        body.append('phone', phoneVal);
+        body.append('csrfmiddlewaretoken',tokenValue);
+
+        //Get current date.
+        let fechaActual = new Date();
+        //console.log(fechaActual)
+
+        fetch(`/soldiers/api/alerts/`,{
+            method: 'POST',
+            body: body
+        })
         .then(response => response.json())
         .then(data =>{
-            const alerts = document.getElementById('alerta');
-            alerts.innerHTML = `Anuncio: ${data.message}`;
-            alerts.style.display = 'block';
-            console.log("hola")
+
+            //Get the end suscription date.
+            let dataEnd = data.info.dateEnd.split('-');
+            let fecha = new Date (`${dataEnd[0]}-${dataEnd[1]}-${dataEnd[2].split('T')[0]}`);
+            //console.log(fecha);
+
+            //Get dates on miliseconds 
+            let currentDate = fechaActual.getTime();
+            let finishDate = fecha.getTime();
+            
+            //Get the difference between dates and convert the milliseconds to days.
+            let diff = finishDate - currentDate;
+            let diffDays = Math.round(diff / (1000 * 60 * 60 * 24));
+            //console.log(diffDays);
+
+            if (data.message == 1){
+
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+                titl.innerHTML = "¿Quién está ahí?";
+                text.innerHTML = "Parece que aun no estas en la familia <strong>Comandos Gym</strong>, por favor habla con algun asesor para registrarte.";
+                img.src = "{% static 'images/randm.png' %}"
+                //console.log("El usuario no esta registrado.")
+            }
+            else if (data.message == 2){
+
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+                var days = document.getElementById('days');
+                var number = document.getElementById('daysLeft');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+                days.style.display = 'math';
+
+                //Show number of days left.
+                if (diffDays >= 5){
+                    days.style.backgroundColor="#051B11";
+                    days.style.color="#75B798";
+                }
+                else if (diffDays <=4){
+                    days.style.backgroundColor="#332701";
+                    days.style.color="#FFDA6A";
+                }
+                else{
+                    days.style.backgroundColor="#ad1010";
+                    days.style.color="#000000";
+                }
+
+                titl.innerHTML = "Bienvenido " +data.info.nombreSold+" "+data.info.apellidoSold+ ".";
+                text.innerHTML = "Disfruta de nuestras de nuestras instalaciones.";
+                daysLeft.innerHTML = diffDays;
+                img.src = data.info.photo_url;
+                //console.log("Registro satisfactorio.")
+            }
+            else if (data.message == 3){
+
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+                var days = document.getElementById('days');
+                var number = document.getElementById('daysLeft');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+                days.style.display = 'math';
+
+                //Show number of days left.
+                if (diffDays >= 5){
+                    days.style.backgroundColor="#051B11";
+                    days.style.color="#75B798";
+                }
+                else if (diffDays <=4){
+                    days.style.backgroundColor="#332701";
+                    days.style.color="#FFDA6A";
+                }
+                else{
+                    days.style.backgroundColor="#ad1010";
+                    days.style.color="#000000";
+                }
+
+                titl.innerHTML = "¿De nuevo por aca "+data.info.nombreSold+" "+data.info.apellidoSold+"?";
+                text.innerHTML = "Parece que ya ingresaste el dia de hoy a <strong>Comandos Gym</strong>, te esperamos mañana.";
+                daysLeft.innerHTML = diffDays;
+                img.src = data.info.photo_url;
+                //console.log("El usuario ya asistió el dia de hoy.")
+            }
+            else if (data.message == 4){
+
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+                titl.innerHTML = "Bienvenido " +data.info.nombreSold+" "+data.info.apellidoSold;
+                text.innerHTML = "Parece que aun no tienes una suscripcion activa, por favor habla con algun asesor para adquirir una.";
+                img.src = data.info.photo_url;
+                //console.log("El usuario no tiene ninguna orden de suscripcion registrada.")
+            }
+            else{
+                console.log("Nop")
+            }
         })
         .catch (error => {
             console.error('Error al obtener los datos: ', error)
         })
     });
 </script> 
-<div>
-    <p id="alerta" style="display: none;"></p>
+<div id="alerta" style="display: none; width: 35%; position: relative; left: 30%; border: 0cm;">
+    <div class="card">
+        <img id="img" class="card-img-top" alt="Dynamic-Img">
+        <div class="card-body">
+          <h5 id="title" class="card-title"></h5>
+          <p id="context" class="card-text"></p>
+        </div>
+    </div>
+</div>
+<div id="days" style="display: none;">
+    <span id="daysLeft"></span>
 </div>
 {% endblock content %}

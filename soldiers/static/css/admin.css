@@ -1,0 +1,65 @@
+body{
+  color: black;
+}
+.help, p.help, form p.help{
+  color: #5c0505;
+}
+.aligned .form-row input{
+  border-color: black;
+}
+/*
+----Alternative style
+body{
+  background-color: #000000;
+  color: #000000;
+  }
+----Admin page
+  .dashboard-item{
+  background-color: black;
+}
+.dashboard-item.collapsed{
+  background-color: #070707;
+}
+.dashboard-item:last-child{
+  background-color: black;
+}
+.ui-sortable-handle{
+  background-color: #59677e;
+  border-radius: 15px 15px 0px 0px;
+}
+.icon-arrow-down:before{
+  color: #000000;
+}
+.icon-arrow-up:before{
+  color: #000000;
+}
+.icon-edit:before{
+  color: #000000;
+}
+.icon-cross:before{
+  color: #000000;
+}
+a{
+  color: #af0c0c;
+}
+.user-tools ul li.user-tools-welcome-msg{
+  background-color: #fff;
+}
+.dashboard-tools .button{
+  background-color: #59677e;
+}
+.reset-dashboard-link-icon{
+  color: #af0c0c;
+}
+.icon-add:before {
+  color: #af0c0c;
+}
+.icon-menu:before {
+  color: #af0c0c;
+}
+
+----Usuarios
+.changelist-footer{
+  background: #af0c0c;
+}
+*/
