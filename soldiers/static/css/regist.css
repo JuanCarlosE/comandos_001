@@ -1,10 +1,16 @@
-#days{
-    padding: 30px;
-    border-radius: 20px;
-    left: 70%;
-    top: -376px;
-    position: relative;
-}
 #daysLeft{
-    font-size:xx-large;
+    margin-left: 20%;
+    margin-top: -5%;
 }
+.col-sm-3{
+    width: 85%;
+}
+.card.mb-4{
+    margin-right: 10%;
+}
+@media only screen and (max-width: 400px) {
+    #daysLeft{
+        margin-left: 30% !important;
+        margin-top: -8.5% !important;
+    }
+  }
