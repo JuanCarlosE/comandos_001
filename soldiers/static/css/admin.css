@@ -7,6 +7,9 @@ body{
 .aligned .form-row input{
   border-color: black;
 }
+.theme-toggle{
+  display: none;
+}
 /*
 ----Alternative style
 body{
