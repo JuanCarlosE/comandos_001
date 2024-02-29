@@ -1,4 +1,5 @@
 import os
+import base64
 import datetime
 from weasyprint import HTML
 from django.conf import settings
@@ -156,15 +157,15 @@ def viewInvoice(request,id):
     ]
     total = sum([i['valorProd'] for i in items])
 
-    # Send email
-    '''
-    subject, from_email, to = "Hello", "comandosgym@hotmail.com", "jespinosalozano@gmail.com"
-    text_content = "This is an important message."
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.content_subtype = "html"
-    '''
-
     try:
+
+        email = EmailMultiAlternatives(
+            subject = 'Bienvenido a la familia Comandos Gym',
+            body = 'Hola ¿como estas? aqui esta tu factura',
+            from_email = 'comandosgym@hotmail.com',
+            to = ['jespinosalozano@gmail.com'],
+        )
+
         info = {
             "numFactura":data.id,
             "fechaCreacion":data.creationDate.date,
@@ -175,26 +176,82 @@ def viewInvoice(request,id):
             "totalFactu":total,
             "logo":logo_url
         }
+
+        # Create pdf file with template 'invTemplate.html' 
+        html_string = render_to_string('invTemplate.html',info)
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        # Create path folders if doesn't exist
+        download_folder = os.path.join(settings.BASE_DIR, 'Media', 'Invoices')
+        os.makedirs(download_folder, exist_ok=True)
+        file_path = os.path.join(download_folder, f'Factura-{id}.pdf')
+
+        # Put the pdf file on path Media/Invoices  
+        with open(file_path, 'wb') as f: # <-- 'WB' means write binary
+            f.write(pdf_file)
+
+        # Get the pdf file and encode as bytes and convert to string to attach the on the email
+        with open(file_path, 'rb') as file: # <-- 'RB' means read binary
+            encoded_pdf = base64.b64encode(file.read()).decode()
         
-        html_string = render_to_string('invTemplate.html',info)
-        pdf_file = HTML(string=html_string).write_pdf()
+        # Attach pdf file to email
+        email.attach(f'Factura-{id}.pdf', encoded_pdf, 'application/pdf')
 
-        response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="Factura_{id}.pdf"'
-        return response
-
-        #msg.send()
-
-    except:
-        html_string = render_to_string('invTemplate.html',info)
-        pdf_file = HTML(string=html_string).write_pdf()
-
+        # Create pdf file view and download it
         response = HttpResponse(pdf_file, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="Factura-{id}.pdf"'
+        
+        # Send mail
+        email.send()
         return response
 
-        #msg.send()
+    except:
 
+        email = EmailMultiAlternatives(
+            subject = 'Bienvenido a la familia Comandos Gym',
+            body = 'Hola ¿como estas? aqui esta tu factura',
+            from_email = 'comandosgym@hotmail.com',
+            to = ['jespinosalozano@gmail.com'],
+        )
+
+        info = {
+            "numFactura":data.id,
+            "fechaCreacion":data.creationDate.date,
+            "client":data.soldier, 
+            "pagoMeto":data.methodPayment,
+            "items":items,
+            "final":"No aplica.",
+            "totalFactu":total,
+            "logo":logo_url
+        }
+
+        # Create pdf file with template 'invTemplate.html' 
+        html_string = render_to_string('invTemplate.html',info)
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        # Create path folders if doesn't exist
+        download_folder = os.path.join(settings.BASE_DIR, 'Media', 'Invoices')
+        os.makedirs(download_folder, exist_ok=True)
+        file_path = os.path.join(download_folder, f'Factura-{id}.pdf')
+
+        # Put the pdf file on path Media/Invoices  
+        with open(file_path, 'wb') as f: # <-- 'WB' means write binary
+            f.write(pdf_file)
+
+        # Get the pdf file and encode as bytes and convert to string to attach the on the email
+        with open(file_path, 'rb') as file: # <-- 'RB' means read binary
+            encoded_pdf = base64.b64encode(file.read()).decode()
+        
+        # Attach pdf file to email
+        email.attach(f'Factura-{id}.pdf', encoded_pdf, 'application/pdf')
+
+        # Create pdf file view and download it
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="Factura-{id}.pdf"'
+
+        # Send mail
+        email.send()
+        return response
 
 @login_required
 def viewProfile(request,id):
