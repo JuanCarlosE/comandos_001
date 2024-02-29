@@ -1,11 +1,16 @@
+import os
 import datetime
+from weasyprint import HTML
+from django.conf import settings
 from django.utils import timezone
-from products.models import ProductServ
 from django.shortcuts import render
 from .models import Soldier,Assistence
-from django.db.models import Q
-from django.http import JsonResponse
+from products.models import ProductServ
 from orders.models import Order,OrderDetail
+from django.templatetags.static import static
+from django.http import JsonResponse,HttpResponse
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required,permission_required
 
@@ -137,6 +142,8 @@ def viewMorosos(request):
 
 @login_required
 def viewInvoice(request,id):
+    # Invoice data
+    logo_url = request.build_absolute_uri(static('images/logo.png'))
     data = Order.objects.filter(id=id).latest('id')
     nameItem = OrderDetail.objects.filter(order=id).get()#Pregunta si aca siempre buscaria la orden actual en la que esta.
     valueItem = ProductServ.objects.filter(name=nameItem.product).get()
@@ -148,14 +155,46 @@ def viewInvoice(request,id):
         }
     ]
     total = sum([i['valorProd'] for i in items])
+
+    # Send email
+    '''
+    subject, from_email, to = "Hello", "comandosgym@hotmail.com", "jespinosalozano@gmail.com"
+    text_content = "This is an important message."
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.content_subtype = "html"
+    '''
+
     try:
-        info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
-                "pagoMeto":data.methodPayment, "items":items,"final":nameItem.endSuscription.date,"totalFactu":total}
-        return render (request, "invTemplate.html",info)
+        info = {
+            "numFactura":data.id,
+            "fechaCreacion":data.creationDate.date,
+            "client":data.soldier, 
+            "pagoMeto":data.methodPayment,
+            "items":items,
+            "final":nameItem.endSuscription.date,
+            "totalFactu":total,
+            "logo":logo_url
+        }
+        
+        html_string = render_to_string('invTemplate.html',info)
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="Factura_{id}.pdf"'
+        return response
+
+        #msg.send()
+
     except:
-        info = {"numFactura":data.id, "fechaCreacion":data.creationDate.date, "client":data.soldier, 
-                "pagoMeto":data.methodPayment, "items":items,"final":"No aplica","totalFactu":total}
-        return render (request, "invTemplate.html",info)
+        html_string = render_to_string('invTemplate.html',info)
+        pdf_file = HTML(string=html_string).write_pdf()
+
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="Factura-{id}.pdf"'
+        return response
+
+        #msg.send()
+
 
 @login_required
 def viewProfile(request,id):

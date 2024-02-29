@@ -154,3 +154,23 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 """
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# SMPT CONFIGURATION
+'''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com' # outlook server name
+EMAIL_PORT = 587 # hotmail port
+EMAIL_HOST_USER = 'jespinosalozano@outlook.com' # email
+EMAIL_HOST_PASSWORD = '1007159999Je' # password
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+'''
+# FAKE SMPT CONFIGURATION
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_PORT = '2525'
+EMAIL_HOST_USER = '4c5655b2fe7cbe'
+EMAIL_HOST_PASSWORD = '5f42cbf4941832'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
