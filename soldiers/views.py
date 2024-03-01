@@ -1,5 +1,4 @@
 import os
-import base64
 import datetime
 from weasyprint import HTML
 from django.conf import settings
