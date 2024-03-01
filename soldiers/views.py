@@ -9,10 +9,10 @@ from .models import Soldier,Assistence
 from products.models import ProductServ
 from orders.models import Order,OrderDetail
 from django.templatetags.static import static
-from django.http import JsonResponse,HttpResponse,FileResponse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse,HttpResponse,FileResponse
 from django.contrib.auth.decorators import login_required,permission_required
 
 # Create your views here.
@@ -240,7 +240,7 @@ def viewInvoice(request,id):
 
         # Attach pdf file to email
         email.attach_file(file_path)
-        
+
         # Send mail
         email.send()
         return response
