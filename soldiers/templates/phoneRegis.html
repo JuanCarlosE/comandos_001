@@ -8,11 +8,24 @@
             {% csrf_token %}
     <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="inputGroup-sizing-sm">Ingresa tu número de teléfono</span>
-            <input type="text" name="phone" id="Campo_Telefono" value="{{phone}}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            <input maxlength="10" type="text" name="phone" id="Campo_Telefono" value="{{phone}}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
             <input type="submit" value="Enviar" id="sendBtn" class="btn btn-outline-secondary">
         </div>
     </div>
 </div>
+<script>
+  // This script put the focus on sendbutton when the input phone it's full
+  document.addEventListener('DOMContentLoaded', function () {
+    var inputPhone = document.getElementById('Campo_Telefono');
+    var sendBtn = document.getElementById('sendBtn');
+
+    inputPhone.addEventListener('input', function () {
+        if (inputPhone.value.length >= parseInt(inputPhone.getAttribute('maxlength'), 10)) {
+            sendBtn.focus();
+        }
+    });
+});
+</script>
 <script>
     document.getElementById('sendBtn').addEventListener('click', function(){
         let phoneVal = document.querySelector('#Campo_Telefono').value;
