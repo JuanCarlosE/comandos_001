@@ -9,7 +9,7 @@ from .models import Soldier,Assistence
 from products.models import ProductServ
 from orders.models import Order,OrderDetail
 from django.templatetags.static import static
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse,HttpResponse,FileResponse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.core.exceptions import ObjectDoesNotExist
@@ -163,7 +163,7 @@ def viewInvoice(request,id):
             subject = 'Bienvenido a la familia Comandos Gym',
             body = 'Hola ¿como estas? aqui esta tu factura',
             from_email = 'comandosgym@hotmail.com',
-            to = ['jespinosalozano@gmail.com'],
+            to = [data.soldier.email],
         )
 
         info = {
@@ -190,17 +190,13 @@ def viewInvoice(request,id):
         with open(file_path, 'wb') as f: # <-- 'WB' means write binary
             f.write(pdf_file)
 
-        # Get the pdf file and encode as bytes and convert to string to attach the on the email
-        with open(file_path, 'rb') as file: # <-- 'RB' means read binary
-            encoded_pdf = base64.b64encode(file.read()).decode()
-        
-        # Attach pdf file to email
-        email.attach(f'Factura-{id}.pdf', encoded_pdf, 'application/pdf')
-
         # Create pdf file view and download it
-        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response = FileResponse(open(file_path,"rb"))
         response['Content-Disposition'] = f'attachment; filename="Factura-{id}.pdf"'
-        
+
+        # Attach pdf file to email
+        email.attach_file(file_path)
+
         # Send mail
         email.send()
         return response
@@ -211,7 +207,7 @@ def viewInvoice(request,id):
             subject = 'Bienvenido a la familia Comandos Gym',
             body = 'Hola ¿como estas? aqui esta tu factura',
             from_email = 'comandosgym@hotmail.com',
-            to = ['jespinosalozano@gmail.com'],
+            to = [data.soldier.email],
         )
 
         info = {
@@ -237,18 +233,14 @@ def viewInvoice(request,id):
         # Put the pdf file on path Media/Invoices  
         with open(file_path, 'wb') as f: # <-- 'WB' means write binary
             f.write(pdf_file)
-
-        # Get the pdf file and encode as bytes and convert to string to attach the on the email
-        with open(file_path, 'rb') as file: # <-- 'RB' means read binary
-            encoded_pdf = base64.b64encode(file.read()).decode()
         
-        # Attach pdf file to email
-        email.attach(f'Factura-{id}.pdf', encoded_pdf, 'application/pdf')
-
         # Create pdf file view and download it
-        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response = FileResponse(open(file_path,"rb"))
         response['Content-Disposition'] = f'attachment; filename="Factura-{id}.pdf"'
 
+        # Attach pdf file to email
+        email.attach_file(file_path)
+        
         # Send mail
         email.send()
         return response
