@@ -23,6 +23,9 @@
         if (inputPhone.value.length >= parseInt(inputPhone.getAttribute('maxlength'), 10)) {
             sendBtn.focus();
         }
+    sendBtn.addEventListener('click', function(){
+      inputPhone.focus();
+    })
     });
 });
 </script>
