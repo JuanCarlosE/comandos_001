@@ -91,10 +91,37 @@ border-radius: 0 !important;
 align-content: center !important;
 padding: 0 !important;
 }
-
+@media only screen and (max-width: 500px) {
+  .datepicker-dropdown {
+    top: 18% !important;
+    left: calc(45% - 173.5px) !important;
+  }
+  .datepicker-dropdown.datepicker-orient-left:before {
+    display: none;
+  }
+  .datepicker-dropdown.datepicker-orient-left:after {
+    display: none;
+  }
+  .datepicker-dropdown.datepicker-orient-right:before {
+    display: none;
+  } 
+  .datepicker-dropdown.datepicker-orient-right:after {
+    display: none;
+  }
+  .input-group {
+    width: 360px;
+  }
+  #start{
+    margin-left: -20px;
+  }
+  #fa-2{
+    left: calc(90% - 59px);
+  }
+  #fa-1 {
+    left: calc(45% - 56px);
+  }
+}
 .datepicker-dropdown {
-top: 29% !important;
-left: calc(20% - 173.5px) !important;
 border-right: #1976D2;
 border-left: #1976D2;
 }

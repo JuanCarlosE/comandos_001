@@ -1,16 +1,220 @@
 {% extends "base.html" %}
 {% load static%}
 {% block content %}
-
+    <link rel="stylesheet" href="{% static 'css/regist.css' %}" >
 <div>
 <title>Registro de asistencia</title>
-        <form action="/soldiers/save/" method="post">
+        <div id="register" method="post">
             {% csrf_token %}
     <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="inputGroup-sizing-sm">Ingresa tu número de teléfono</span>
-            <input type="text" name="phone" id="Campo_Telefono" value="{{phone}}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-            <input type="submit" value="Enviar" class="btn btn-outline-secondary">
-        </form>
+            <input maxlength="10" type="text" name="phone" id="Campo_Telefono" value="{{phone}}" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            <input type="submit" value="Enviar" id="sendBtn" class="btn btn-outline-secondary">
+        </div>
     </div>
 </div>
+<script>
+  // This script put the focus on sendbutton when the input phone it's full
+  document.addEventListener('DOMContentLoaded', function () {
+    var inputPhone = document.getElementById('Campo_Telefono');
+    var sendBtn = document.getElementById('sendBtn');
+
+    inputPhone.addEventListener('input', function () {
+        if (inputPhone.value.length >= parseInt(inputPhone.getAttribute('maxlength'), 10)) {
+            sendBtn.focus();
+        }
+    sendBtn.addEventListener('click', function(){
+      inputPhone.focus();
+    })
+    });
+});
+</script>
+<script>
+    document.getElementById('sendBtn').addEventListener('click', function(){
+        let phoneVal = document.querySelector('#Campo_Telefono').value;
+        let tokenValue = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        let body = new FormData();
+        body.append('phone', phoneVal);
+        body.append('csrfmiddlewaretoken',tokenValue);
+
+        //Get current date.
+        let fechaActual = new Date();
+        //console.log(fechaActual)
+
+        fetch(`/soldiers/api/alerts/`,{
+            method: 'POST',
+            body: body
+        })
+        .then(response => response.json())
+        .then(data =>{
+
+            if (data.message == 1){
+                var days = document.getElementById('days');
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+                days.style.display = 'none';
+                titl.innerHTML = "¿Quién está ahí?";
+                text.innerHTML = "Parece que aun no estas en la familia <strong>Comandos Gym</strong>, por favor habla con algun asesor para registrarte.";
+                img.src = "{% static 'images/randm.png' %}"
+                //console.log("El usuario no esta registrado.")
+            }
+            else if (data.message == 2){
+
+                //Get the end suscription date.
+                let dataEnd = data.info.dateEnd.split('-');
+                let fecha = new Date (`${dataEnd[0]}-${dataEnd[1]}-${dataEnd[2]}`);
+                //console.log(fecha);
+
+                //Get dates on miliseconds 
+                let currentDate = fechaActual.getTime();
+                let finishDate = fecha.getTime();
+                
+                //Get the difference between dates and convert the milliseconds to days.
+                let diff = finishDate - currentDate;
+                let diffDays = Math.round(diff / (1000 * 60 * 60 * 24));
+                //console.log(diffDays);
+
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+                var days = document.getElementById('days');
+                var number = document.getElementById('daysLeft');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+
+                //Show number of days left.
+                if (diffDays >= 5){
+                    days.style.color="#228B22";
+                    number.style.cssText='color:#228B22 !important';
+                    days.style.display = 'block';
+                }
+                else if (diffDays <=4){
+                    days.style.color="#FFDA6A";
+                    number.style.cssText='color:#FFDA6A !important';
+                    days.style.display = 'block';
+                }
+                else{
+                    days.style.color="#000000";
+                }
+
+                titl.innerHTML = "Bienvenido " +data.info.nombreSold+" "+data.info.apellidoSold+ ".";
+                text.innerHTML = "Disfruta de nuestras de nuestras instalaciones.";
+                daysLeft.innerHTML = diffDays + " Días";;
+                img.src = data.info.photo_url;
+                //console.log("Registro satisfactorio.")
+            }
+            else if (data.message == 3){
+
+                //Get the end suscription date.
+                let dataEnd = data.info.dateEnd.split('-');
+                let fecha = new Date (`${dataEnd[0]}-${dataEnd[1]}-${dataEnd[2]}`);
+                //console.log(fecha);
+
+                //Get dates on miliseconds 
+                let currentDate = fechaActual.getTime();
+                let finishDate = fecha.getTime();
+                
+                //Get the difference between dates and convert the milliseconds to days.
+                let diff = finishDate - currentDate;
+                let diffDays = Math.round(diff / (1000 * 60 * 60 * 24));
+                //console.log(diffDays);
+
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+                var days = document.getElementById('days');
+                var number = document.getElementById('daysLeft');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+
+                //Show number of days left.
+                if (diffDays >= 5){
+                    days.style.color="#228B22";
+                    number.style.cssText='color:#228B22 !important';
+                    days.style.display = 'block';
+                }
+                else if (diffDays <=4){
+                    days.style.color="#FFDA6A";
+                    number.style.cssText='color:#FFDA6A !important';
+                    days.style.display = 'block';
+                }
+                else{
+                    days.style.display = 'none';
+                }
+
+                titl.innerHTML = "¿De nuevo por aca "+data.info.nombreSold+" "+data.info.apellidoSold+"?";
+                text.innerHTML = "Parece que ya ingresaste el dia de hoy a <strong>Comandos Gym</strong>, te esperamos mañana.";
+                daysLeft.innerHTML = diffDays + " Días";
+                img.src = data.info.photo_url;
+                //console.log("El usuario ya asistió el dia de hoy.")
+            }
+            else if (data.message == 4){
+
+                var days = document.getElementById('days');
+                var alerts = document.getElementById('alerta');
+                var img = document.getElementById('img');
+                var titl = document.getElementById('title');
+                var text = document.getElementById('context');
+
+                //Show hidden content.
+                alerts.style.display = 'block';
+                days.style.display = 'none';
+                titl.innerHTML = "Bienvenido " +data.info.nombreSold+" "+data.info.apellidoSold;
+                text.innerHTML = "Parece que aun no tienes una suscripcion activa, por favor habla con algun asesor para adquirir una.";
+                img.src = data.info.photo_url;
+                //console.log("El usuario no tiene ninguna orden de suscripcion registrada.")
+            }
+            else{
+                console.log("Nop")
+            }
+        })
+        .catch (error => {
+            console.error('Error al obtener los datos: ', error)
+        })
+    });
+</script> 
+<section id="alerta" style="display: none;">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img id="img" class="img-thumbnail img-fluid" style="width: 150px;" alt="Dynamic-Img">
+              <p class="h4" id="title"></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row" id="days" style="display: none;">
+                <div class="col-sm-3">
+                  <p class="mb-0">Te quedan:</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0" id="daysLeft"></p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0" id="context"></p>
+                </div>
+              </div>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
 {% endblock content %}

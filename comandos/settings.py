@@ -32,8 +32,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
-
 # Application definition
 
 DJANGO_APPS = [
@@ -46,7 +44,10 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    'djmoney',
+    'corsheaders'
+]
 
 LOCAL_APPS = [
     'soldiers.apps.SoldiersConfig',
@@ -66,7 +67,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'comandos.urls'
 
@@ -134,56 +138,35 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+LOGIN_URL='/admin/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR / 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-"""
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
-"""
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-#Themes for dashboard
 
-JET_THEMES = [
-    {
-        'theme': 'default', # theme folder name
-        'color': '#47bac1', # color of the theme's button in user menu
-        'title': 'Default' # theme title
-    },
-    {
-        'theme': 'green',
-        'color': '#44b78b',
-        'title': 'Green'
-    },
-    {
-        'theme': 'light-green',
-        'color': '#2faa60',
-        'title': 'Light Green'
-    },
-    {
-        'theme': 'light-violet',
-        'color': '#a464c4',
-        'title': 'Light Violet'
-    },
-    {
-        'theme': 'light-blue',
-        'color': '#5EADDE',
-        'title': 'Light Blue'
-    },
-    {
-        'theme': 'light-gray',
-        'color': '#222',
-        'title': 'Light Gray'
-    }
-]
+# SMPT CONFIGURATION
+'''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com' # outlook server name
+EMAIL_PORT = 587 # hotmail port
+EMAIL_HOST_USER = 'jespinosalozano@outlook.com' # email
+EMAIL_HOST_PASSWORD = '1007159999Je' # password
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+'''
+# FAKE SMPT CONFIGURATION
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_PORT = '2525'
+EMAIL_HOST_USER = '4c5655b2fe7cbe'
+EMAIL_HOST_PASSWORD = '5f42cbf4941832'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

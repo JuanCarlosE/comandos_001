@@ -1,19 +1,5 @@
 {% load static %}
 {% block content %}
-
-<head>
-    <title>Alerta</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- Bootstrap JS -->
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <!-- Awesome Icon's CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-</head>
-
 <body>
     <div id="mensaje">
         {% if message == 1 %}
@@ -28,6 +14,5 @@
             <p>Error :c</p>
         {% endif %}
     </div>
-    <a href="{% url 'soldiers:check' %}" class="btn btn-outline-danger" role="button">Volver</a>
 </body>
 {% endblock content %}
