@@ -1,0 +1,28 @@
+nav{
+    background-color: #ad1010;
+}
+.nav-link{
+    color: black !important;
+    font-weight: bold !important;
+}
+.carousel{
+    margin: -1px;
+}
+hr.line{
+    margin-top: 2px;
+    margin-bottom: 2px;
+    opacity: 1;
+    background-color: #ad1010;
+    height: 50px;
+    border-radius: 5px;
+    border-color: solid #ad1010
+}
+hr.line::after{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    margin-top: -24px;
+    margin-left: -24px;
+    left: 50%;
+    background: url("/soldiers/static/images/gift-ezgif.com-effects.gif");
+}
