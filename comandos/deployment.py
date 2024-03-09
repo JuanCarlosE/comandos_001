@@ -35,7 +35,7 @@ parameters = {pair.split('='):pair.split('=')[1]for pair in connection_string.sp
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NANME': parameters['dbname'],
+        'NAME': parameters['dbname'],
         'HOST': parameters['host'],
         'USER': parameters['user'],
         'PASSWORD': parameters['password'],
