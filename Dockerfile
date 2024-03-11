@@ -7,9 +7,8 @@ RUN apt-get update
 
 WORKDIR /usr/src/app
 COPY . .
-RUN sudo apt-get update
-RUN sudo apt-get install -y libcairo2 libpango-1.0-0
-RUN sudo apt-get install -y libgirepository1.0-dev
+#RUN sudo apt-get install -y libcairo2 libpango-1.0-0
+#RUN sudo apt-get install -y libgirepository1.0-dev
 RUN pip install --no-cache-dir -r requirements.txt
 
 
