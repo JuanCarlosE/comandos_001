@@ -28,6 +28,7 @@ pycparser==2.21
 pydyf==0.9.0
 pyodbc==4.0.39
 pyphen==0.14.0
+python-dotenv==1.0.1
 pytz==2023.3
 PyYAML==6.0.1
 rcssmin==1.1.1
