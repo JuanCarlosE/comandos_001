@@ -28,7 +28,25 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://gymcomandos.azurewebsites.net',
+    'http://localhost:80',
+    'http://0.0.0.0:80',
+]
+
+ALLOWED_HOSTS = [
+    'gymcomandos.azurewebsites.net',
+    'localhost',
+    '0.0.0.0:80',
+    '0.0.0.0',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://gymcomandos.azurewebsites.net',
+    'http://localhost:8000',
+    'http://0.0.0.0:80',
+]
+SECURE_SSL_REDIRECT = True
 
 # Application definition
 
@@ -67,8 +85,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware', 
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'comandos.urls'
 
