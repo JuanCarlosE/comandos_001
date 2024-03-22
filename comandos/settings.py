@@ -37,8 +37,9 @@ CSRF_TRUSTED_ORIGINS = [
 ALLOWED_HOSTS = [
     'gymcomandos.azurewebsites.net',
     'localhost',
-    '0.0.0.0:80',
     '0.0.0.0',
+    '169.254.130.4',
+    '20.124.153.5',
 ]
 
 CORS_ALLOWED_ORIGINS = [
