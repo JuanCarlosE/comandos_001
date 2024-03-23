@@ -38,8 +38,8 @@ ALLOWED_HOSTS = [
     'gymcomandos.azurewebsites.net',
     'localhost',
     '0.0.0.0',
-    '169.254.130.4',
-    '20.124.153.5',
+    '4.157.114.162',
+    '20.119.16.24',
 ]
 
 CORS_ALLOWED_ORIGINS = [
