@@ -48,4 +48,4 @@ jobs:
         app-name: 'comandos'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_191def428e4c462bb74b9de91e695911 }}
-        images: 'comandosgym.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d40b4b32193f4004947b5c904c4c03af }}/comandos_comandos_web:${{ github.sha }}'
+        images: 'comandosgym.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d40b4b32193f4004947b5c904c4c03af }}/comandos_comandos_web:azurev1.2.8'
