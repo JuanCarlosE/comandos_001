@@ -34,20 +34,14 @@ CSRF_TRUSTED_ORIGINS = [
     'http://0.0.0.0:80',
 ]
 
-ALLOWED_HOSTS = [
-    'gymcomandos.azurewebsites.net',
-    'localhost',
-    '0.0.0.0',
-    '4.157.114.162',
-    '20.119.16.24',
-]
+ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = [
     'https://gymcomandos.azurewebsites.net',
     'http://localhost:8000',
     'http://0.0.0.0:80',
 ]
-SECURE_SSL_REDIRECT = True
+
 
 # Application definition
 
@@ -117,8 +111,8 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'HOST': 'comandos-db.postgres.database.azure.com',
+        'PORT': '5432',
     }
 }
 
