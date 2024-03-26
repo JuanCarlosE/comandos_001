@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: comandosgym.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_d40b4b32193f4004947b5c904c4c03af }}/comandos_comandos_web:azurev1.2.8
+        tags: comandosgym.azurecr.io/comandos_comandos_web:azurev1.2.8
         file: ./Dockerfile
 
   deploy:
