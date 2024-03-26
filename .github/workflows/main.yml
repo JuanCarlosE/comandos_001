@@ -25,7 +25,7 @@ jobs:
     - name: Build and deploy Container App
       uses: azure/container-apps-deploy-action@v1
       with:
-        appSourcePath: ${{ github.workspace }}/comandos/app
+        appSourcePath: ${{ github.workspace }}
         acrName: ComandosGym
         containerAppName: web-comandos
         resourceGroup: ContainerComandos
