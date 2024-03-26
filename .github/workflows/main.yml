@@ -21,9 +21,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.JSONSP }}
-        
-    - name: Log in to registry
-      run: echo ${{ secrets.JSONSP }} | docker login -u "${{ secrets.JSONSP }}" --password-stdin "${{ secrets.JSONSP }}"
 
     - name: Build and deploy Container App
       uses: azure/container-apps-deploy-action@v1
