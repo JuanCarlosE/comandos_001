@@ -1,0 +1,32 @@
+name: Build and deploy container app to Azure Web App - gymcomandos
+
+on:
+  push:
+    branches:
+      - main
+    paths: 
+      - "/app/**"
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: 'ubuntu-latest'
+    environment: dev
+
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v2
+
+    - name: Log in to registry
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.JSONSP }}
+
+    - name: Build and deploy Container App
+      uses: azure/container-apps-deploy-action@v1
+      with:
+        appSourcePath: ${{ github.workspace }}/app/
+        acrName: ComandosGym
+        containerAppName: web-comandos
+        resourceGroup: ContainerComandos
+        
