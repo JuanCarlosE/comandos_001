@@ -42,7 +42,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://0.0.0.0:80',
 ]
 
-SECURE_SSL_REDIRECT = True
+# Configuración para SSL detrás de un proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
