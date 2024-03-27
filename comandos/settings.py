@@ -112,7 +112,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': 'comandosdb.postgres.database.azure.com',
+        'HOST': 'comandos-db.postgres.database.azure.com',
         'PORT': '5432',
     }
 }
